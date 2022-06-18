@@ -1,5 +1,6 @@
 ﻿using ExpenseTracker.API.Data;
 using ExpenseTracker.API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExpenseTracker.API.Repositories.AccountRepository
 {
@@ -20,5 +21,12 @@ namespace ExpenseTracker.API.Repositories.AccountRepository
 
             return account;
         }
+
+        public async Task<Account> GetAccountByUsername(string username)
+        {
+            return await _exTrackContext.Accounts.FirstOrDefaultAsync(account => account.Username == username);
+        }
+
+
     }
 }

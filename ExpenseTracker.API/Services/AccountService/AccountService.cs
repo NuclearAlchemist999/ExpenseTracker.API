@@ -30,5 +30,10 @@ namespace ExpenseTracker.API.Services.AccountService
 
             return createdAccount.ToAccountDto();
         }
+
+        public async Task<Account> GetAccount(string username)
+        {
+            return await _accountRepo.GetAccountByUsername(username);
+        }
     }
 }

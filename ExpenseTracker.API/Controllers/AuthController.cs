@@ -18,7 +18,12 @@ namespace ExpenseTracker.API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> CreateAccount(CreateAccountRequest request)
         {
+            var dbUser = await _accountservice.GetAccount(request.Username);
+
+            if (dbUser != null) return BadRequest("Username already exists.");
+
             var user = await _accountservice.CreateAccount(request);
+
             return Ok(user);
         }
     }
