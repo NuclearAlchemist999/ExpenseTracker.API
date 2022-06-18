@@ -57,9 +57,10 @@ namespace ExpenseTracker.API.Controllers
                 new CookieOptions
                 {
                     HttpOnly = true,
-                    Secure = true,
-                    Path = "/",
                     IsEssential = true,
+                    Path = "/",
+                    SameSite = SameSiteMode.None,
+                    Secure = true,
                     Expires = DateTime.Now.AddMinutes(720)
                 });
 
@@ -69,6 +70,7 @@ namespace ExpenseTracker.API.Controllers
                     Secure = true,
                     Path = "/",
                     IsEssential = true,
+                    SameSite = SameSiteMode.None,
                     Expires = DateTime.Now.AddMinutes(720)
                 });
 
