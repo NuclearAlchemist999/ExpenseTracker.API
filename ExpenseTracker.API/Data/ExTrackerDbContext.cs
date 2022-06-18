@@ -8,7 +8,6 @@ namespace ExpenseTracker.API.Data
         public ExTrackerDbContext(DbContextOptions<ExTrackerDbContext> options) : base(options) 
         {
         }
-
         public DbSet<Account> Accounts => Set<Account>();
         public DbSet<Expense> Expenses => Set<Expense>();
     }

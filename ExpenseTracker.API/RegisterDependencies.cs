@@ -1,6 +1,7 @@
 ﻿using ExpenseTracker.API.Data;
 using ExpenseTracker.API.Repositories.AccountRepository;
 using ExpenseTracker.API.Services.AccountService;
+using ExpenseTracker.API.Services.JwtService;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExpenseTracker.API
@@ -43,6 +44,7 @@ namespace ExpenseTracker.API
         {
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IJwtService, JwtService>();
         }
     }
 }
