@@ -17,6 +17,9 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
+    <Folder Include="DTO\Convert\" />
+    <Folder Include="DTO\Response\" />
+    <Folder Include="DTO\Request\" />
   </ItemGroup>
 
 </Project>

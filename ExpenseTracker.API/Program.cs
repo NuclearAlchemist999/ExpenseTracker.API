@@ -8,6 +8,8 @@ builder.Services.ConfigureCors();
 
 builder.Services.ConfigureDatabase(builder.Configuration);
 
+builder.Services.ConfigureServices();
+
 var app = builder.Build();
 
 app.UseCors();

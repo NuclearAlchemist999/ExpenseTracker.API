@@ -1,4 +1,6 @@
 ﻿using ExpenseTracker.API.Data;
+using ExpenseTracker.API.Repositories.AccountRepository;
+using ExpenseTracker.API.Services.AccountService;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExpenseTracker.API
@@ -35,6 +37,12 @@ namespace ExpenseTracker.API
                           .WithOrigins("http://localhost:3000");
                 });
             });
+        }
+
+        public static void ConfigureServices(this IServiceCollection services)
+        {
+            services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<IAccountService, AccountService>();
         }
     }
 }
