@@ -81,7 +81,7 @@ namespace ExpenseTracker.API.Controllers
 
         [Authorize]
         [HttpGet("VerifyAuth")]
-        public async Task<IActionResult> VerifyAuth()
+        public IActionResult VerifyAuth()
         {
             var response = new AuthResponseDto
             {
