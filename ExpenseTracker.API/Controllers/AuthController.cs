@@ -1,7 +1,9 @@
 ﻿using ExpenseTracker.API.DTO.Request;
+using ExpenseTracker.API.DTO.Response;
 using ExpenseTracker.API.Services.AccountService;
 using ExpenseTracker.API.Services.AuthService;
 using ExpenseTracker.API.Services.JwtService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -75,6 +77,18 @@ namespace ExpenseTracker.API.Controllers
                 });
 
             return Ok();
+        }
+
+        [Authorize]
+        [HttpGet("VerifyAuth")]
+        public async Task<IActionResult> VerifyAuth()
+        {
+            var response = new AuthResponseDto
+            {
+                IsAuth = true
+            };
+
+            return Ok(response);
         }
     }
 }

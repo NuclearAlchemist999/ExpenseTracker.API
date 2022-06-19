@@ -3,7 +3,10 @@ using ExpenseTracker.API.Repositories.AccountRepository;
 using ExpenseTracker.API.Services.AccountService;
 using ExpenseTracker.API.Services.AuthService;
 using ExpenseTracker.API.Services.JwtService;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
 
 namespace ExpenseTracker.API
 {
@@ -47,6 +50,42 @@ namespace ExpenseTracker.API
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<IAuthService, AuthService>();
+        }
+
+        public static void ConfigureAuthentication(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.Events = new()
+                    {
+                        OnMessageReceived = context =>
+                        {
+                            var cookies = context.Request.Cookies;  
+
+                            if (cookies.TryGetValue("authToken", out var authToken))
+                            {
+                                context.Token = authToken;
+                            }
+
+                            return Task.CompletedTask;
+                        }
+                    };
+#if DEBUG
+                    var secretKey = Encoding.UTF8.GetBytes(configuration["Jwt:SecretKey"]);
+#else
+                    var secretKey = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET_KEY"));
+#endif
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(secretKey),
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.Zero
+                    };
+                });
         }
     }
 }

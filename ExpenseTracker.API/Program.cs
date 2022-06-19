@@ -10,11 +10,15 @@ builder.Services.ConfigureDatabase(builder.Configuration);
 
 builder.Services.ConfigureServices();
 
+builder.Services.ConfigureAuthentication(builder.Configuration);
+
 var app = builder.Build();
 
 app.UseCors();
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
