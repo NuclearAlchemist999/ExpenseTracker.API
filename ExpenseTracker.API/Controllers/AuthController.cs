@@ -90,5 +90,30 @@ namespace ExpenseTracker.API.Controllers
 
             return Ok(response);
         }
+
+        [HttpPost("logout")]
+        public IActionResult Logout()
+        {
+            Response.Cookies.Delete("authToken",
+            new CookieOptions
+            {
+                HttpOnly = true,
+                IsEssential = true,
+                Path = "/",
+                SameSite = SameSiteMode.None,
+                Secure = true,
+            });
+
+            Response.Cookies.Delete("accountId",
+            new CookieOptions
+            {
+                Secure = true,
+                Path = "/",
+                IsEssential = true,
+                SameSite = SameSiteMode.None,
+            });
+
+            return Ok();
+        }
     }
 }
