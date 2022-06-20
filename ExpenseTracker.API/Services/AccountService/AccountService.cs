@@ -15,7 +15,7 @@ namespace ExpenseTracker.API.Services.AccountService
             _accountRepo = accountRepo;
         }
 
-        public async Task<AccountDto> CreateAccount(CreateAccountRequest request)
+        public async Task<AccountDto> CreateAccount(CreateAccountRequestDto request)
         {
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
 

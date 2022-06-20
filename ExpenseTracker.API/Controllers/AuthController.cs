@@ -28,7 +28,7 @@ namespace ExpenseTracker.API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> CreateAccount(CreateAccountRequest request)
+        public async Task<IActionResult> CreateAccount(CreateAccountRequestDto request)
         {
             var dbUser = await _accountservice.GetAccount(request.Username);
 

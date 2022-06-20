@@ -6,7 +6,7 @@ namespace ExpenseTracker.API.Services.AccountService
 {
     public interface IAccountService
     {
-        Task<AccountDto> CreateAccount(CreateAccountRequest request);
+        Task<AccountDto> CreateAccount(CreateAccountRequestDto request);
         Task<Account> GetAccount(string username);
         Task<AccountDto> GetAccountById(Guid accountId);
     }
