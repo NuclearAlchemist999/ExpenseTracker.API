@@ -8,5 +8,6 @@ namespace ExpenseTracker.API.Services.AccountService
     {
         Task<AccountDto> CreateAccount(CreateAccountRequest request);
         Task<Account> GetAccount(string username);
+        Task<AccountDto> GetAccountById(Guid accountId);
     }
 }

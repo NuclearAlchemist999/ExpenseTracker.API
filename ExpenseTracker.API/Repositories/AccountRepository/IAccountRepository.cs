@@ -6,5 +6,6 @@ namespace ExpenseTracker.API.Repositories.AccountRepository
     {
         Task<Account> CreateAccount(Account account);
         Task<Account> GetAccountByUsername(string username);
+        Task<Account> GetAccountById(Guid accountId);
     }
 }

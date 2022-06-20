@@ -27,6 +27,9 @@ namespace ExpenseTracker.API.Repositories.AccountRepository
             return await _exTrackContext.Accounts.FirstOrDefaultAsync(account => account.Username == username);
         }
 
-
+        public async Task<Account> GetAccountById(Guid accountId)
+        {
+            return await _exTrackContext.Accounts.FindAsync(accountId);
+        }
     }
 }
