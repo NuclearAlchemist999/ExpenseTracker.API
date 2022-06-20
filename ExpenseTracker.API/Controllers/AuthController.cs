@@ -91,6 +91,7 @@ namespace ExpenseTracker.API.Controllers
             return Ok(response);
         }
 
+        [Authorize]
         [HttpPost("logout")]
         public IActionResult Logout()
         {
