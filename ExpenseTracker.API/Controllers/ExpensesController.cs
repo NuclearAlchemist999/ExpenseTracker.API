@@ -8,10 +8,10 @@ namespace ExpenseTracker.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ExpenseController : ControllerBase
+    public class ExpensesController : ControllerBase
     {
         private readonly IExpenseService _expenseService;
-        public ExpenseController(IExpenseService expenseService)
+        public ExpensesController(IExpenseService expenseService)
         {
             _expenseService = expenseService;
         }
