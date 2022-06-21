@@ -18,5 +18,11 @@ namespace ExpenseTracker.API.DTO.Converters
                 ShortMonth = expense.ShortMonth
             };
         }
+
+        public static List<ExpenseDto> ToExpenseDtoList(this List<Expense> expenses)
+        {
+            return expenses.Select(ex => ex.ToExpenseDto()).ToList();
+        }
     }
 }
+

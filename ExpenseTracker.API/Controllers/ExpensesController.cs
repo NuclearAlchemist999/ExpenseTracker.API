@@ -28,5 +28,16 @@ namespace ExpenseTracker.API.Controllers
             
             return Ok(expense);
         }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetAllExpensesByYearAndMonth(string month, string year)
+        {
+            var cookie = Request.Cookies["accountId"];
+
+            var expenses = await _expenseService.GetAllExpensesByYearAndMonth(month, year, cookie);
+           
+            return Ok(expenses);
+        }
     }
 }

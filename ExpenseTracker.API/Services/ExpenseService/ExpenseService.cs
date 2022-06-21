@@ -1,8 +1,10 @@
 ﻿using ExpenseTracker.API.DTO.Converters;
 using ExpenseTracker.API.DTO.DtoModels;
 using ExpenseTracker.API.DTO.Request;
+using ExpenseTracker.API.DTO.Response;
 using ExpenseTracker.API.Models;
 using ExpenseTracker.API.Repositories.ExpenseRepository;
+using System.Globalization;
 
 namespace ExpenseTracker.API.Services.ExpenseService
 {
@@ -22,7 +24,8 @@ namespace ExpenseTracker.API.Services.ExpenseService
                 Title = request.Title,
                 Category = request.Category,
                 Price = request.Price,
-                CreatedAt = DateTimeOffset.Parse(request.CreatedAt).UtcDateTime,
+                CreatedAt = DateTime.SpecifyKind(DateTime.ParseExact(request.CreatedAt, "yyyy-MM-dd", 
+                CultureInfo.InvariantCulture), DateTimeKind.Utc),
                 ShortMonth = GetMonth(request.CreatedAt)
             };
 
@@ -31,11 +34,39 @@ namespace ExpenseTracker.API.Services.ExpenseService
             return expense.ToExpenseDto();
         }
 
+        public async Task<AllExpensesResponseDto> GetAllExpensesByYearAndMonth(string month, string year, string cookie)
+        {
+            var accountId = Guid.Parse(cookie);
+            var shortMonth = GetMonth(month);
+            int intYear = Int32.Parse(year);
+
+            var expenses = await _expenseRepo.GetAllExpensesByYearAndMonth(accountId, intYear, shortMonth);
+
+            var expenseValues = new AllExpensesResponseDto
+            {
+                Expenses = expenses.ToExpenseDtoList(),
+                NumberOfExpenses = expenses.Count(),
+                TotalCost = (decimal)expenses.Sum(e => e.Price)        
+            };  
+
+            return expenseValues;
+        }
+
         public string GetMonth(string date)
         {
-            var getMonth = date.Substring(5, 2);
+            string getMonth = "";
             string month = "";
 
+            if (date.Length > 2)
+            {
+                getMonth = date.Substring(5, 2);
+            }
+
+            if (date.Length == 2)
+            {
+                getMonth = date;
+            }
+            
             switch(getMonth)
             {
                 case "01":
