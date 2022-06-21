@@ -16,8 +16,10 @@ namespace ExpenseTracker.API.Services.ExpenseService
             _expenseRepo = expenseRepo;
         }
 
-        public async Task<ExpenseDto> AddExpense(CreateExpenseRequestDto request, Guid accountId)
+        public async Task<ExpenseDto> AddExpense(CreateExpenseRequestDto request, string cookie)
         {
+            var accountId = Guid.Parse(cookie);
+
             var newExpense = new Expense
             {
                 AccountId = accountId,
@@ -34,7 +36,8 @@ namespace ExpenseTracker.API.Services.ExpenseService
             return expense.ToExpenseDto();
         }
 
-        public async Task<AllExpensesResponseDto> GetAllExpensesByYearAndMonth(string month, string year, string cookie)
+        public async Task<AllExpensesResponseDto> GetAllExpensesByYearAndMonth(string month, string year, 
+            string cookie)
         {
             var accountId = Guid.Parse(cookie);
             var shortMonth = GetMonth(month);
@@ -67,7 +70,7 @@ namespace ExpenseTracker.API.Services.ExpenseService
                 getMonth = date;
             }
             
-            switch(getMonth)
+            switch (getMonth)
             {
                 case "01":
                     month = "Jan";

@@ -26,9 +26,7 @@ namespace ExpenseTracker.API.Controllers
                 return NotFound();
             }
 
-            var accountId = Guid.Parse(cookie);
-
-            var account = await _accountService.GetAccountById(accountId);
+            var account = await _accountService.GetAccountById(cookie);
             
             return Ok(account);
         }

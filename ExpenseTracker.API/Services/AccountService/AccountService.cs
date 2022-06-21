@@ -36,8 +36,10 @@ namespace ExpenseTracker.API.Services.AccountService
             return await _accountRepo.GetAccountByUsername(username);
         }
 
-        public async Task<AccountDto> GetAccountById(Guid accountId)
+        public async Task<AccountDto> GetAccountById(string cookie)
         {
+            var accountId = Guid.Parse(cookie);
+
             var account = await _accountRepo.GetAccountById(accountId);
             
             return account.ToAccountDto();

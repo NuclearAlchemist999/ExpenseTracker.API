@@ -1,17 +1,16 @@
 ﻿using ExpenseTracker.API.DTO.Request;
 using ExpenseTracker.API.Services.ExpenseService;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExpenseTracker.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/expenses")]
     [ApiController]
-    public class ExpensesController : ControllerBase
+    public class ExpenseController : ControllerBase
     {
         private readonly IExpenseService _expenseService;
-        public ExpensesController(IExpenseService expenseService)
+        public ExpenseController(IExpenseService expenseService)
         {
             _expenseService = expenseService;
         }
@@ -21,10 +20,8 @@ namespace ExpenseTracker.API.Controllers
         public async Task<IActionResult> AddExpense(CreateExpenseRequestDto request)
         {
             var cookie = Request.Cookies["accountId"];
-            
-            var accountId = Guid.Parse(cookie);
 
-            var expense = await _expenseService.AddExpense(request, accountId);
+            var expense = await _expenseService.AddExpense(request, cookie);
             
             return Ok(expense);
         }
