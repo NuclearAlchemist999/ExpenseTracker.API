@@ -28,7 +28,7 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
             var expenses = await _exTrackContext.Expenses
                .Where(exp => exp.CreatedYear == createdYear && exp.ShortMonth == shortMonth && 
                 exp.AccountId == accountId)
-               .Sorting(orderBy)
+               .Sort(orderBy)
                .Select(exp => exp)
                .ToListAsync();
                 
