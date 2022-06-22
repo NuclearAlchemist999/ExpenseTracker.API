@@ -6,13 +6,15 @@ namespace ExpenseTracker.API.Extensions
     {
         public static IQueryable<Expense> Sorting(this IQueryable<Expense> query, string orderBy)
         {
-            if (string.IsNullOrWhiteSpace(orderBy)) return query.OrderByDescending(e => e.CreatedAt);
+            var orderByDesc = query.OrderByDescending(e => e.CreatedAt);
+
+            if (string.IsNullOrWhiteSpace(orderBy)) return orderByDesc;
 
             query = orderBy switch
             {
                 "dateAsc" => query.OrderBy(e => e.CreatedAt),
-                "dateDesc" => query.OrderByDescending(e => e.CreatedAt),
-                _ => query.OrderByDescending(e => e.CreatedAt)
+                "dateDesc" => orderByDesc,
+                _ => orderByDesc
             };
 
             return query;
