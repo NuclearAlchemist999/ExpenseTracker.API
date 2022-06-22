@@ -37,13 +37,13 @@ namespace ExpenseTracker.API.Services.ExpenseService
         }
 
         public async Task<AllExpensesResponseDto> GetAllExpensesByYearAndMonth(string month, string year, 
-            string cookie)
+            string cookie, string orderBy)
         {
             var accountId = Guid.Parse(cookie);
             var shortMonth = GetMonth(month);
             int intYear = Int32.Parse(year);
 
-            var expenses = await _expenseRepo.GetAllExpensesByYearAndMonth(accountId, intYear, shortMonth);
+            var expenses = await _expenseRepo.GetAllExpensesByYearAndMonth(accountId, intYear, shortMonth, orderBy);
 
             var expenseValues = new AllExpensesResponseDto
             {

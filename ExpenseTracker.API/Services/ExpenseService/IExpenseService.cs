@@ -7,6 +7,7 @@ namespace ExpenseTracker.API.Services.ExpenseService
     public interface IExpenseService
     {
         Task<ExpenseDto> AddExpense(CreateExpenseRequestDto request, string cookie);
-        Task<AllExpensesResponseDto> GetAllExpensesByYearAndMonth(string month, string year, string cookie);
+        Task<AllExpensesResponseDto> GetAllExpensesByYearAndMonth(string month, string year, string cookie,
+            string orderBy);
     }
 }

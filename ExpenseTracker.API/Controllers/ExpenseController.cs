@@ -28,11 +28,11 @@ namespace ExpenseTracker.API.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetAllExpensesByYearAndMonth(string month, string year)
+        public async Task<IActionResult> GetAllExpensesByYearAndMonth(string month, string year, string orderBy)
         {
             var cookie = Request.Cookies["accountId"];
 
-            var expenses = await _expenseService.GetAllExpensesByYearAndMonth(month, year, cookie);
+            var expenses = await _expenseService.GetAllExpensesByYearAndMonth(month, year, cookie, orderBy);
            
             return Ok(expenses);
         }

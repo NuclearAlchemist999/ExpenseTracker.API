@@ -1,4 +1,5 @@
 ﻿using ExpenseTracker.API.Data;
+using ExpenseTracker.API.Extensions;
 using ExpenseTracker.API.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,11 +23,12 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
         }
 
         public async Task<List<Expense>> GetAllExpensesByYearAndMonth(Guid accountId, int createdYear, 
-            string shortMonth)
+            string shortMonth, string orderBy)
         {
             var expenses = await _exTrackContext.Expenses
                .Where(exp => exp.CreatedYear == createdYear && exp.ShortMonth == shortMonth && 
                 exp.AccountId == accountId)
+               .Sorting(orderBy)
                .Select(exp => exp)
                .ToListAsync();
                 
