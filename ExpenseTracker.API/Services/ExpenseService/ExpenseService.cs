@@ -20,16 +20,14 @@ namespace ExpenseTracker.API.Services.ExpenseService
         {
             var accountId = Guid.Parse(cookie);
 
-            var exp = new Expense();
-
             var newExpense = new Expense
             {
                 AccountId = accountId,
                 Title = request.Title,
                 Category = request.Category,
                 Price = request.Price,
-                CreatedAt = exp.ConvertToDate(request.CreatedAt),
-                ShortMonth = exp.GetMonth(request.CreatedAt)
+                CreatedAt = request.CreatedAt.ConvertToDate(),
+                ShortMonth = request.CreatedAt.ToShortMonth()
             };
 
             var expense = await _expenseRepo.AddExpense(newExpense);
@@ -40,10 +38,8 @@ namespace ExpenseTracker.API.Services.ExpenseService
         public async Task<AllExpensesResponseDto> GetAllExpensesByYearAndMonth(string month, string year, 
             string cookie, string orderBy)
         {
-            var expense = new Expense();
-
             var accountId = Guid.Parse(cookie);
-            var shortMonth = expense.GetMonth(month);
+            var shortMonth = month.ToShortMonth();
             int intYear = int.Parse(year);
 
             var expenses = await _expenseRepo.GetAllExpensesByYearAndMonth(accountId, intYear, shortMonth, orderBy);
