@@ -42,8 +42,8 @@ namespace ExpenseTracker.API.Services.ExpenseService
             var accountId = Guid.Parse(cookie);
             var shortMonth = param.Month.ToShortMonth();
 
-            var expenses = await _expenseRepo.GetAllExpensesByYearAndMonth(accountId, param, shortMonth);
-            var totalExpenses = await _expenseRepo.GetExpenses(accountId, param, shortMonth);
+            var totalExpenses = await _expenseRepo.GetAllExpensesByYearAndMonth(accountId, param, shortMonth);
+            var expenses = await _expenseRepo.GetExpensesAndPage(accountId, param, shortMonth);
             double totalPages = Math.Ceiling((double)totalExpenses.Count() / (double)param.Limit);
 
             var expenseValues = new AllExpensesResponseDto

@@ -29,21 +29,21 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
             var expenses = await _exTrackContext.Expenses
                .Where(exp => exp.CreatedYear == param.Year && exp.ShortMonth == shortMonth && 
                 exp.AccountId == accountId)
-               .Sort(param.OrderBy)
-               .Select(exp => exp)
-               .Skip(param.Limit * (param.Page - 1))
-               .Take(param.Limit)
                .ToListAsync();
                 
             return expenses;        
         }
 
-        public async Task<List<Expense>> GetExpenses(Guid accountId, ExpenseParams param,
+        public async Task<List<Expense>> GetExpensesAndPage(Guid accountId, ExpenseParams param,
             string shortMonth)
         {
             var expenses = await _exTrackContext.Expenses
                .Where(exp => exp.CreatedYear == param.Year && exp.ShortMonth == shortMonth &&
                 exp.AccountId == accountId)
+               .Sort(param.OrderBy)
+               .Select(exp => exp)
+               .Skip(param.Limit * (param.Page - 1))
+               .Take(param.Limit)
                .ToListAsync();
 
             return expenses;
