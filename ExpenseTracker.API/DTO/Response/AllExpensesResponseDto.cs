@@ -7,5 +7,6 @@ namespace ExpenseTracker.API.DTO.Response
         public List<ExpenseDto> Expenses { get; set; }
         public int NumberOfExpenses { get; set; }
         public decimal TotalCost { get; set; }
+        public int TotalPages { get; set; }
     }
 }

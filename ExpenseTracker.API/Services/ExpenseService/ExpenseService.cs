@@ -44,12 +44,14 @@ namespace ExpenseTracker.API.Services.ExpenseService
 
             var expenses = await _expenseRepo.GetAllExpensesByYearAndMonth(accountId, param, shortMonth);
             var totalExpenses = await _expenseRepo.GetExpenses(accountId, param, shortMonth);
+            double totalPages = Math.Ceiling((double)totalExpenses.Count() / (double)param.Limit);
 
             var expenseValues = new AllExpensesResponseDto
             {
                 Expenses = expenses.ToExpenseDtoList(),
                 NumberOfExpenses = totalExpenses.Count(),
-                TotalCost = (decimal)totalExpenses.Sum(e => e.Price)        
+                TotalCost = (decimal)totalExpenses.Sum(e => e.Price),
+                TotalPages = (int)totalPages
             };  
 
             return expenseValues;
