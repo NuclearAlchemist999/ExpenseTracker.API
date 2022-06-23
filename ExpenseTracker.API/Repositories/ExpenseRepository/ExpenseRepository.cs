@@ -1,6 +1,7 @@
 ﻿using ExpenseTracker.API.Data;
 using ExpenseTracker.API.Extensions;
 using ExpenseTracker.API.Models;
+using ExpenseTracker.API.ParamModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExpenseTracker.API.Repositories.ExpenseRepository
@@ -22,13 +23,13 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
             return expense;
         }
 
-        public async Task<List<Expense>> GetAllExpensesByYearAndMonth(Guid accountId, int createdYear, 
-            string shortMonth, string orderBy)
+        public async Task<List<Expense>> GetAllExpensesByYearAndMonth(Guid accountId, ExpenseParams param, 
+            string shortMonth)
         {
             var expenses = await _exTrackContext.Expenses
-               .Where(exp => exp.CreatedYear == createdYear && exp.ShortMonth == shortMonth && 
+               .Where(exp => exp.CreatedYear == param.Year && exp.ShortMonth == shortMonth && 
                 exp.AccountId == accountId)
-               .Sort(orderBy)
+               .Sort(param.OrderBy)
                .Select(exp => exp)
                .ToListAsync();
                 

@@ -4,6 +4,7 @@ using ExpenseTracker.API.DTO.Request;
 using ExpenseTracker.API.DTO.Response;
 using ExpenseTracker.API.Extensions;
 using ExpenseTracker.API.Models;
+using ExpenseTracker.API.ParamModels;
 using ExpenseTracker.API.Repositories.ExpenseRepository;
 
 namespace ExpenseTracker.API.Services.ExpenseService
@@ -35,14 +36,13 @@ namespace ExpenseTracker.API.Services.ExpenseService
             return expense.ToExpenseDto();
         }
 
-        public async Task<AllExpensesResponseDto> GetAllExpensesByYearAndMonth(string month, string year, 
-            string cookie, string orderBy)
+        public async Task<AllExpensesResponseDto> GetAllExpensesByYearAndMonth(ExpenseParams param,
+            string cookie)
         {
             var accountId = Guid.Parse(cookie);
-            var shortMonth = month.ToShortMonth();
-            int intYear = int.Parse(year);
+            var shortMonth = param.Month.ToShortMonth();
 
-            var expenses = await _expenseRepo.GetAllExpensesByYearAndMonth(accountId, intYear, shortMonth, orderBy);
+            var expenses = await _expenseRepo.GetAllExpensesByYearAndMonth(accountId, param, shortMonth);
 
             var expenseValues = new AllExpensesResponseDto
             {

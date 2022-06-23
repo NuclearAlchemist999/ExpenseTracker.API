@@ -1,11 +1,11 @@
 ﻿using ExpenseTracker.API.Models;
+using ExpenseTracker.API.ParamModels;
 
 namespace ExpenseTracker.API.Repositories.ExpenseRepository
 {
     public interface IExpenseRepository
     {
         Task<Expense> AddExpense(Expense expense);
-        Task<List<Expense>> GetAllExpensesByYearAndMonth(Guid accountId, int createdYear, string shortMonth,
-            string orderBy);
+        Task<List<Expense>> GetAllExpensesByYearAndMonth(Guid accountId, ExpenseParams param, string shortMonth);
     }
 }
