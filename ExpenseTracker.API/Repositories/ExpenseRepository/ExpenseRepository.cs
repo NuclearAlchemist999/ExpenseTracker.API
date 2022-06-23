@@ -31,6 +31,8 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
                 exp.AccountId == accountId)
                .Sort(param.OrderBy)
                .Select(exp => exp)
+               .Skip(param.Limit * (param.Page - 1))
+               .Take(param.Limit)
                .ToListAsync();
                 
             return expenses;        
