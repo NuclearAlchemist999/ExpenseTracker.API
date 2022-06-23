@@ -37,5 +37,16 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
                 
             return expenses;        
         }
+
+        public async Task<List<Expense>> GetExpenses(Guid accountId, ExpenseParams param,
+            string shortMonth)
+        {
+            var expenses = await _exTrackContext.Expenses
+               .Where(exp => exp.CreatedYear == param.Year && exp.ShortMonth == shortMonth &&
+                exp.AccountId == accountId)
+               .ToListAsync();
+
+            return expenses;
+        }
     }
 }

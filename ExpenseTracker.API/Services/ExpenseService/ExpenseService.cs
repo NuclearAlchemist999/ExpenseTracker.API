@@ -43,12 +43,13 @@ namespace ExpenseTracker.API.Services.ExpenseService
             var shortMonth = param.Month.ToShortMonth();
 
             var expenses = await _expenseRepo.GetAllExpensesByYearAndMonth(accountId, param, shortMonth);
+            var totalExpenses = await _expenseRepo.GetExpenses(accountId, param, shortMonth);
 
             var expenseValues = new AllExpensesResponseDto
             {
                 Expenses = expenses.ToExpenseDtoList(),
-                NumberOfExpenses = expenses.Count(),
-                TotalCost = (decimal)expenses.Sum(e => e.Price)        
+                NumberOfExpenses = totalExpenses.Count(),
+                TotalCost = (decimal)totalExpenses.Sum(e => e.Price)        
             };  
 
             return expenseValues;

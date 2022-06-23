@@ -7,5 +7,7 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
     {
         Task<Expense> AddExpense(Expense expense);
         Task<List<Expense>> GetAllExpensesByYearAndMonth(Guid accountId, ExpenseParams param, string shortMonth);
+        Task<List<Expense>> GetExpenses(Guid accountId, ExpenseParams param,
+            string shortMonth);
     }
 }
