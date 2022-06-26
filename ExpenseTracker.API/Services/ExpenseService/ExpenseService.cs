@@ -66,5 +66,10 @@ namespace ExpenseTracker.API.Services.ExpenseService
         {
             return await _expenseRepo.DeleteExpense(id);
         }
+
+        public async Task<Expense> UpdateExpense(Guid id, UpdateExpenseRequestDto request)
+        {
+            return await _expenseRepo.UpdateExpense(id, request);
+        }
     }
 }

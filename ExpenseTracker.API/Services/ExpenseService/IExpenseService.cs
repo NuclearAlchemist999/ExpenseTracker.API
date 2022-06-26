@@ -12,5 +12,6 @@ namespace ExpenseTracker.API.Services.ExpenseService
         Task<AllExpensesResponseDto> GetAllExpensesByYearAndMonth(ExpenseParams param, string cookie);
         Task<Expense> GetExpense(Guid expenseId);
         Task<bool> DeleteExpense(Guid id);
+        Task<Expense> UpdateExpense(Guid id, UpdateExpenseRequestDto request);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using ExpenseTracker.API.Data;
+using ExpenseTracker.API.DTO.Request;
 using ExpenseTracker.API.Extensions;
 using ExpenseTracker.API.Models;
 using ExpenseTracker.API.ParamModels;
@@ -61,6 +62,23 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
             _exTrackContext.Expenses.Remove(expense);
 
             return await _exTrackContext.SaveChangesAsync() > 0;
+        }
+
+        public async Task<Expense> UpdateExpense(Guid id, UpdateExpenseRequestDto request)
+        {
+            var expense = await GetExpense(id);
+
+            expense.Title = request.Title;
+            expense.Category = request.Category;
+            expense.Price = request.Price;
+            expense.CreatedAt = request.CreatedAt;
+            expense.CreatedYear = DateTime.Parse(request.CreatedAt).Year;
+            expense.ShortMonth = request.CreatedAt.ToShortMonth();
+            expense.UpdatedAt = DateTime.UtcNow;
+
+            await _exTrackContext.SaveChangesAsync();
+
+            return expense;
         }
     }
 }

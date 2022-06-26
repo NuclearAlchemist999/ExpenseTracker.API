@@ -62,5 +62,18 @@ namespace ExpenseTracker.API.Controllers
 
             return isDeleted ? Ok() : StatusCode(500, "Could not delete expense.");
         }
+
+        [Authorize]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateExpense(Guid id, UpdateExpenseRequestDto request)
+        {
+            var expense = await _expenseService.GetExpense(id);
+
+            if (expense == null) return NotFound();
+
+            var updatedExpense = await _expenseService.UpdateExpense(id, request);
+
+            return Ok(updatedExpense.ToExpenseDto());
+        }
     }
 }
