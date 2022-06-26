@@ -27,7 +27,8 @@ namespace ExpenseTracker.API.Services.ExpenseService
                 Title = request.Title,
                 Category = request.Category,
                 Price = request.Price,
-                CreatedAt = request.CreatedAt.ConvertToDate(),
+                CreatedAt = request.CreatedAt,
+                CreatedYear = DateTime.Parse(request.CreatedAt).Year,
                 ShortMonth = request.CreatedAt.ToShortMonth()
             };
 

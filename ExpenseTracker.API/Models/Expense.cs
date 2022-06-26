@@ -8,9 +8,9 @@
         public string Title { get; set; }
         public string Category { get; set; }
         public double Price { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public string CreatedAt { get; set; } 
         public DateTime? UpdatedAt { get; set; }
-        public int CreatedYear { get; set; } = DateTime.Today.Year;
+        public int CreatedYear { get; set; } 
         public string ShortMonth { get; set; } 
     }
 }

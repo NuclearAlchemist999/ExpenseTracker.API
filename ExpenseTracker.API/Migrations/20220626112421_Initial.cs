@@ -33,7 +33,7 @@ namespace ExpenseTracker.API.Migrations
                     Title = table.Column<string>(type: "text", nullable: true),
                     Category = table.Column<string>(type: "text", nullable: true),
                     Price = table.Column<double>(type: "double precision", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedAt = table.Column<string>(type: "text", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     CreatedYear = table.Column<int>(type: "integer", nullable: false),
                     ShortMonth = table.Column<string>(type: "text", nullable: true)

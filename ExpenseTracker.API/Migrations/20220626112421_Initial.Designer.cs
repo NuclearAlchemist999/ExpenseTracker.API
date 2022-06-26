@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ExpenseTracker.API.Migrations
 {
     [DbContext(typeof(ExTrackerDbContext))]
-    [Migration("20220618162730_Initial")]
+    [Migration("20220626112421_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,8 +59,8 @@ namespace ExpenseTracker.API.Migrations
                     b.Property<string>("Category")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<string>("CreatedAt")
+                        .HasColumnType("text");
 
                     b.Property<int>("CreatedYear")
                         .HasColumnType("integer");

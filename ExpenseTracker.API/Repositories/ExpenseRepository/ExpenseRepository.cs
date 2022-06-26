@@ -25,13 +25,13 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
 
         public async Task<List<Expense>> GetAllExpensesByYearAndMonth(Guid accountId, ExpenseParams param, 
             string shortMonth)
-        {
-            var expenses = await _exTrackContext.Expenses
-               .Where(exp => exp.CreatedYear == param.Year && exp.ShortMonth == shortMonth && 
-                exp.AccountId == accountId)
-               .ToListAsync();
-                
-            return expenses;        
+        {   
+             var expenses = await _exTrackContext.Expenses
+                           .Where(exp => exp.CreatedYear == param.Year && exp.ShortMonth == shortMonth &&
+                           exp.AccountId == accountId)
+                           .ToListAsync();
+
+             return expenses;        
         }
 
         public async Task<List<Expense>> GetExpensesAndPage(Guid accountId, ExpenseParams param,
@@ -42,7 +42,7 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
                 exp.AccountId == accountId)
                .Sort(param.OrderBy)
                .Select(exp => exp)
-               .Skip(param.Limit * (param.Page - 1))
+               .Skip((param.Limit * (param.Page - 1)))
                .Take(param.Limit)
                .ToListAsync();
 

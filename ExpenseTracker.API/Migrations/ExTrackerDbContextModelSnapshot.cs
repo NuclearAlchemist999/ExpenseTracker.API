@@ -57,8 +57,8 @@ namespace ExpenseTracker.API.Migrations
                     b.Property<string>("Category")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<string>("CreatedAt")
+                        .HasColumnType("text");
 
                     b.Property<int>("CreatedYear")
                         .HasColumnType("integer");
