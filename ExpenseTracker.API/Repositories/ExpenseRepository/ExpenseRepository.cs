@@ -38,13 +38,13 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
             string shortMonth)
         {
             var expenses = await _exTrackContext.Expenses
-               .Where(exp => exp.CreatedYear == param.Year && exp.ShortMonth == shortMonth &&
-                exp.AccountId == accountId)
-               .Sort(param.OrderBy)
-               .Select(exp => exp)
-               .Skip((param.Limit * (param.Page - 1)))
-               .Take(param.Limit)
-               .ToListAsync();
+                           .Where(exp => exp.CreatedYear == param.Year && exp.ShortMonth == shortMonth &&
+                            exp.AccountId == accountId)
+                           .Sort(param.OrderBy)
+                           .Select(exp => exp)
+                           .Skip((param.Limit * (param.Page - 1)))
+                           .Take(param.Limit)
+                           .ToListAsync();
 
             return expenses;
         }

@@ -8,16 +8,7 @@ namespace ExpenseTracker.API.Extensions
         {
             var orderByDesc = query.OrderByDescending(e => e.CreatedAt);
            
-
             if (string.IsNullOrWhiteSpace(orderBy)) return orderByDesc;
-
-            //var year = DateTime.Parse("2022-06-22").Year;
-            //var month = DateTime.Parse("2022-06-22").Month;
-            //var day = DateTime.Parse("2022-06-22").Day;
-
-            //var dateString = "2022-06-22";
-
-        //    var fuckyoudateIhateYou = Convert.ToDateTime("2022-06-22");
 
             query = orderBy switch
             {
