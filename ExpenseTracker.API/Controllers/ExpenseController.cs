@@ -49,5 +49,18 @@ namespace ExpenseTracker.API.Controllers
            
             return Ok(expenses);
         }
+
+        [Authorize]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteExpense(Guid id)
+        {
+            var expense = await _expenseService.GetExpense(id);
+
+            if (expense == null) return NotFound();
+
+            var isDeleted = await _expenseService.DeleteExpense(id);
+
+            return isDeleted ? Ok() : StatusCode(500, "Could not delete expense.");
+        }
     }
 }

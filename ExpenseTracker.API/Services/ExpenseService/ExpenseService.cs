@@ -61,5 +61,10 @@ namespace ExpenseTracker.API.Services.ExpenseService
 
             return expenseValues;
         }
+
+        public async Task<bool> DeleteExpense(Guid id)
+        {
+            return await _expenseRepo.DeleteExpense(id);
+        }
     }
 }

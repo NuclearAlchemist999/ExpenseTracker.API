@@ -54,13 +54,13 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
             return expenses;
         }
 
-        public async Task<Expense> DeleteExpense(Guid expenseId)
+        public async Task<bool> DeleteExpense(Guid expenseId)
         {
             var expense = await GetExpense(expenseId);
 
             _exTrackContext.Expenses.Remove(expense);
 
-            return expense;
+            return await _exTrackContext.SaveChangesAsync() > 0;
         }
     }
 }
