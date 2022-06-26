@@ -17,6 +17,10 @@ namespace ExpenseTracker.API.Services.ExpenseService
             _expenseRepo = expenseRepo;
         }
 
+        public async Task<Expense> GetExpense(Guid expenseId)
+        {
+            return await _expenseRepo.GetExpense(expenseId);
+        }
         public async Task<ExpenseDto> AddExpense(CreateExpenseRequestDto request, string cookie)
         {
             var accountId = Guid.Parse(cookie);

@@ -1,6 +1,7 @@
 ﻿using ExpenseTracker.API.DTO.DtoModels;
 using ExpenseTracker.API.DTO.Request;
 using ExpenseTracker.API.DTO.Response;
+using ExpenseTracker.API.Models;
 using ExpenseTracker.API.ParamModels;
 
 namespace ExpenseTracker.API.Services.ExpenseService
@@ -9,5 +10,6 @@ namespace ExpenseTracker.API.Services.ExpenseService
     {
         Task<ExpenseDto> AddExpense(CreateExpenseRequestDto request, string cookie);
         Task<AllExpensesResponseDto> GetAllExpensesByYearAndMonth(ExpenseParams param, string cookie);
+        Task<Expense> GetExpense(Guid expenseId);
     }
 }

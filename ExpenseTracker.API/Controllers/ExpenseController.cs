@@ -1,4 +1,5 @@
-﻿using ExpenseTracker.API.DTO.Request;
+﻿using ExpenseTracker.API.DTO.Converters;
+using ExpenseTracker.API.DTO.Request;
 using ExpenseTracker.API.ParamModels;
 using ExpenseTracker.API.Services.ExpenseService;
 using Microsoft.AspNetCore.Authorization;
@@ -14,6 +15,17 @@ namespace ExpenseTracker.API.Controllers
         public ExpenseController(IExpenseService expenseService)
         {
             _expenseService = expenseService;
+        }
+        
+        [Authorize]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetExpense(Guid id)
+        {
+            var expense = await _expenseService.GetExpense(id);
+
+            if (expense == null) return NotFound(); 
+
+            return Ok(expense.ToExpenseDto());
         }
 
         [Authorize]

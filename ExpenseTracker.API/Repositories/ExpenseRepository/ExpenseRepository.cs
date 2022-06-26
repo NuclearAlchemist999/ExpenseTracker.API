@@ -14,6 +14,11 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
             _exTrackContext = exTrackContext;
         }
 
+        public async Task<Expense> GetExpense(Guid expenseId)
+        {
+            return await _exTrackContext.Expenses.FindAsync(expenseId);
+        }
+
         public async Task<Expense> AddExpense(Expense expense)
         {
             _exTrackContext.Expenses.Add(expense);
@@ -47,6 +52,15 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
                            .ToListAsync();
 
             return expenses;
+        }
+
+        public async Task<Expense> DeleteExpense(Guid expenseId)
+        {
+            var expense = await GetExpense(expenseId);
+
+            _exTrackContext.Expenses.Remove(expense);
+
+            return expense;
         }
     }
 }
