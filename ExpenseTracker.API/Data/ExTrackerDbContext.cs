@@ -10,5 +10,6 @@ namespace ExpenseTracker.API.Data
         }
         public DbSet<Account> Accounts => Set<Account>();
         public DbSet<Expense> Expenses => Set<Expense>();
+        public DbSet<Category> Categories => Set<Category>(); 
     }
 }

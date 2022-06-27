@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Text;
 using ExpenseTracker.API.Repositories.ExpenseRepository;
 using ExpenseTracker.API.Services.ExpenseService;
+using ExpenseTracker.API.Repositories.CategoryRepository;
+using ExpenseTracker.API.Services.CategoryService;
 
 namespace ExpenseTracker.API
 {
@@ -54,6 +56,8 @@ namespace ExpenseTracker.API
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IExpenseRepository, ExpenseRepository>();
             services.AddScoped<IExpenseService, ExpenseService>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<ICategoryService, CategoryService>();
         }
 
         public static void ConfigureAuthentication(this IServiceCollection services, IConfiguration configuration)

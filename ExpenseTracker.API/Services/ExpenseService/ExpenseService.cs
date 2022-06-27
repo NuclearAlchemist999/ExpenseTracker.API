@@ -23,13 +23,11 @@ namespace ExpenseTracker.API.Services.ExpenseService
         }
         public async Task<ExpenseDto> AddExpense(CreateExpenseRequestDto request, string cookie)
         {
-            var accountId = Guid.Parse(cookie);
-
             var newExpense = new Expense
             {
-                AccountId = accountId,
+                AccountId = Guid.Parse(cookie),
                 Title = request.Title,
-                Category = request.Category,
+                CategoryId = Guid.Parse(request.CategoryId),
                 Price = request.Price,
                 CreatedAt = request.CreatedAt,
                 CreatedYear = DateTime.Parse(request.CreatedAt).Year,

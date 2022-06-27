@@ -6,7 +6,8 @@
         public Account Account { get; set; }
         public Guid AccountId { get; set; }
         public string Title { get; set; }
-        public string Category { get; set; }
+        public Category Category { get; set; }
+        public Guid CategoryId { get; set; }
         public double Price { get; set; }
         public string CreatedAt { get; set; } 
         public DateTime? UpdatedAt { get; set; }

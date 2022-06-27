@@ -45,6 +45,20 @@ namespace ExpenseTracker.API.Migrations
                     b.ToTable("Accounts");
                 });
 
+            modelBuilder.Entity("ExpenseTracker.API.Models.Category", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
             modelBuilder.Entity("ExpenseTracker.API.Models.Expense", b =>
                 {
                     b.Property<Guid>("Id")
@@ -54,8 +68,8 @@ namespace ExpenseTracker.API.Migrations
                     b.Property<Guid>("AccountId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Category")
-                        .HasColumnType("text");
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("CreatedAt")
                         .HasColumnType("text");
@@ -79,6 +93,8 @@ namespace ExpenseTracker.API.Migrations
 
                     b.HasIndex("AccountId");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Expenses");
                 });
 
@@ -90,7 +106,15 @@ namespace ExpenseTracker.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ExpenseTracker.API.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Account");
+
+                    b.Navigation("Category");
                 });
 #pragma warning restore 612, 618
         }
