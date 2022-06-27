@@ -3,6 +3,7 @@ using ExpenseTracker.API.DTO.Request;
 using ExpenseTracker.API.Extensions;
 using ExpenseTracker.API.Models;
 using ExpenseTracker.API.ParamModels;
+using ExpenseTracker.API.Repositories.CategoryRepository;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExpenseTracker.API.Repositories.ExpenseRepository
@@ -10,9 +11,11 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
     public class ExpenseRepository : IExpenseRepository
     {
         private readonly ExTrackerDbContext _exTrackContext;
-        public ExpenseRepository(ExTrackerDbContext exTrackContext)
+        private readonly ICategoryRepository _categoryRepo;
+        public ExpenseRepository(ExTrackerDbContext exTrackContext, ICategoryRepository categoryRepo)
         {
             _exTrackContext = exTrackContext;
+            _categoryRepo = categoryRepo;
         }
 
         public async Task<Expense> GetExpense(Guid expenseId)
@@ -24,13 +27,11 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
 
         public async Task<Expense> AddExpense(Expense expense)
         {   
-           _exTrackContext.Expenses.Add(expense);
+            _exTrackContext.Expenses.Add(expense);
 
-            var category = await _exTrackContext.Categories
-                         .Where(cat => cat.Id == expense.CategoryId)
-                         .FirstOrDefaultAsync(); 
+            var category = await _categoryRepo.GetCategory(expense.CategoryId); 
                         
-            expense.Category.Title = category.Title;
+            expense.Category = category;
 
             await _exTrackContext.SaveChangesAsync();
 

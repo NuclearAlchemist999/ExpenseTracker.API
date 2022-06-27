@@ -11,7 +11,7 @@ namespace ExpenseTracker.API.DTO.Converters
             {
                 Id = expense.Id,
                 Title = expense.Title,
-                Category = expense.Category.Title,
+                Category = expense.Category,
                 Price = expense.Price,
                 CreatedAt = expense.CreatedAt.ToString().Substring(0, 10),
                 CreatedYear = expense.CreatedYear,

@@ -16,5 +16,10 @@ namespace ExpenseTracker.API.Repositories.CategoryRepository
         {
             return await _exTrackContext.Categories.ToListAsync();
         }
+
+        public async Task<Category> GetCategory(Guid id)
+        {
+            return await _exTrackContext.Categories.FirstOrDefaultAsync(c => c.Id == id);         
+        }
     }
 }
