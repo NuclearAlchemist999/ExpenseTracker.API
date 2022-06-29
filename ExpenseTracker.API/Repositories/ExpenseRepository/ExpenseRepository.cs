@@ -52,21 +52,29 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
         {
             var expenses = await GetExpenses(accountId);
 
-            return expenses.Where(e => e.CreatedYear == _params.Year && e.ShortMonth == shortMonth)
-                   .ToList();    
+            return expenses.Where(e => YearAndMonth(e, _params.Year, shortMonth)).ToList();    
         }
 
         public async Task<List<Expense>> GetExpensesAndPage(Guid accountId, ExpenseParams _params,
             string shortMonth)
         {
-             return await _exTrackContext.Expenses
-                           .Where(e => e.CreatedYear == _params.Year && e.ShortMonth == shortMonth &&
-                           e.AccountId == accountId)
-                           .Include(e => e.Category)
-                           .Sort(_params.OrderBy)
-                           .Skip((_params.Limit * (_params.Page - 1)))
-                           .Take(_params.Limit)
-                           .ToListAsync();       
+            var expenses = await GetExpensesAndSort(accountId, _params);
+
+            return expenses.Where(e => YearAndMonth(e, _params.Year, shortMonth)).ToList();       
+        }
+        public bool YearAndMonth(Expense expense, int year, string shortMonth)
+        {
+            return expense.CreatedYear == year && expense.ShortMonth == shortMonth;
+        }
+        public async Task<List<Expense>> GetExpensesAndSort(Guid accountId, ExpenseParams _params)
+        {   
+            return await _exTrackContext.Expenses
+                                   .Include(e => e.Category)
+                                   .Where(e => e.AccountId == accountId)
+                                   .Sort(_params.OrderBy)
+                                   .Skip((_params.Limit * (_params.Page - 1)))
+                                   .Take(_params.Limit)
+                                   .ToListAsync();
         }
 
         public async Task<bool> DeleteExpense(Guid expenseId)

@@ -81,6 +81,14 @@ namespace ExpenseTracker.API.Controllers
         {
             var cookie = Request.Cookies["accountId"];
 
+            if (_params.StartDate != null && _params.EndDate != null)
+            {
+                if (DateTime.Parse(_params.StartDate) > DateTime.Parse(_params.EndDate))
+                {
+                    return BadRequest();
+                }
+            }
+
             var expenses = await _expenseService.FilterExpenses(cookie, _params);
             
             return Ok(expenses);
