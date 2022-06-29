@@ -18,6 +18,14 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
             _categoryRepo = categoryRepo;
         }
 
+        public async Task<List<Expense>> GetExpenses(Guid accountId)
+        {
+            return await _exTrackContext.Expenses
+                        .Include(e => e.Category)
+                        .Where(e => e.AccountId == accountId)
+                        .ToListAsync();
+        }
+
         public async Task<Expense> GetExpense(Guid expenseId)
         {
             return await _exTrackContext.Expenses
