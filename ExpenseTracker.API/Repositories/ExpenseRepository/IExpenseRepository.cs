@@ -13,5 +13,7 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
         Task<bool> DeleteExpense(Guid expenseId);
         Task<Expense> UpdateExpense(Guid id, UpdateExpenseRequestDto request);
         Task<List<Expense>> GetExpenses(Guid accountId);
+        Task<List<Expense>> GetExpensesByCategories(Guid accountId, FilterExpenseParams param);
+        Task<List<Expense>> GetExpensesByTimeInterval(Guid accountId, FilterExpenseParams _params);
     }
 }

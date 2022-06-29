@@ -39,15 +39,15 @@ namespace ExpenseTracker.API.Services.ExpenseService
             return expense.ToExpenseDto();
         }
 
-        public async Task<AllExpensesResponseDto> GetAllExpensesByYearAndMonth(ExpenseParams param,
+        public async Task<AllExpensesResponseDto> GetAllExpensesByYearAndMonth(ExpenseParams _params,
             string cookie)
         {
             var accountId = Guid.Parse(cookie);
-            var shortMonth = param.Month.ToShortMonth();
+            var shortMonth = _params.Month.ToShortMonth();
 
-            var totalExpenses = await _expenseRepo.GetAllExpensesByYearAndMonth(accountId, param, shortMonth);
-            var expenses = await _expenseRepo.GetExpensesAndPage(accountId, param, shortMonth);
-            double totalPages = Math.Ceiling((double)totalExpenses.Count() / (double)param.Limit);
+            var totalExpenses = await _expenseRepo.GetAllExpensesByYearAndMonth(accountId, _params, shortMonth);
+            var expenses = await _expenseRepo.GetExpensesAndPage(accountId, _params, shortMonth);
+            double totalPages = Math.Ceiling((double)totalExpenses.Count() / (double)_params.Limit);
 
             var expenseValues = new AllExpensesResponseDto
             {
@@ -68,6 +68,24 @@ namespace ExpenseTracker.API.Services.ExpenseService
         public async Task<Expense> UpdateExpense(Guid id, UpdateExpenseRequestDto request)
         {
             return await _expenseRepo.UpdateExpense(id, request);
+        }
+
+        public async Task<List<ExpenseDto>> FilterExpenses(string cookie, FilterExpenseParams _params)
+        {
+            var expenses = new List<Expense>();
+            var accountId = Guid.Parse(cookie);
+
+            if (_params.StartDate == null && _params.EndDate == null && _params.Month == null && _params.Year == null)
+            {
+                expenses = await _expenseRepo.GetExpensesByCategories(accountId, _params);
+            }
+
+            if (_params.Categories == null && _params.Month == null && _params.Year == null)
+            {
+                expenses = await _expenseRepo.GetExpensesByTimeInterval(accountId, _params);
+            }
+
+            return expenses.ToExpenseDtoList();
         }
     }
 }

@@ -41,11 +41,11 @@ namespace ExpenseTracker.API.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetAllExpensesByYearAndMonth([FromQuery] ExpenseParams param)
+        public async Task<IActionResult> GetAllExpensesByYearAndMonth([FromQuery] ExpenseParams _params)
         { 
             var cookie = Request.Cookies["accountId"];
 
-            var expenses = await _expenseService.GetAllExpensesByYearAndMonth(param, cookie);
+            var expenses = await _expenseService.GetAllExpensesByYearAndMonth(_params, cookie);
            
             return Ok(expenses);
         }
@@ -74,6 +74,16 @@ namespace ExpenseTracker.API.Controllers
             var updatedExpense = await _expenseService.UpdateExpense(id, request);
 
             return Ok(updatedExpense.ToExpenseDto());
+        }
+
+        [HttpPost("filter")]
+        public async Task<IActionResult> FilterExpenses(FilterExpenseParams _params)
+        {
+            var cookie = Request.Cookies["accountId"];
+
+            var expenses = await _expenseService.FilterExpenses(cookie, _params);
+            
+            return Ok(expenses);
         }
     }
 }
