@@ -47,20 +47,20 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
             return expense;
         }
 
-        public async Task<List<Expense>> GetAllExpensesByYearAndMonth(Guid accountId, ExpenseParams _params, 
+        public async Task<List<Expense>> GetExpensesByYearAndMonth(Guid accountId, ExpenseParams _params, 
             string shortMonth)
         {
             var expenses = await GetExpenses(accountId);
 
-            return expenses.Where(e => YearAndMonth(e, _params.Year, shortMonth)).ToList();    
+            return expenses.Where(e => YearAndMonth(e, (int)_params.Year, shortMonth)).ToList();    
         }
 
-        public async Task<List<Expense>> GetExpensesAndPage(Guid accountId, ExpenseParams _params,
+        public async Task<List<Expense>> GetExpensesByYearAndMonthAndPage(Guid accountId, ExpenseParams _params,
             string shortMonth)
         {
             var expenses = await GetExpensesAndSort(accountId, _params);
 
-            return expenses.Where(e => YearAndMonth(e, _params.Year, shortMonth)).ToList();       
+            return expenses.Where(e => YearAndMonth(e, (int)_params.Year, shortMonth)).ToList();       
         }
         public bool YearAndMonth(Expense expense, int year, string shortMonth)
         {
@@ -75,6 +75,7 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
                                    .Skip((_params.Limit * (_params.Page - 1)))
                                    .Take(_params.Limit)
                                    .ToListAsync();
+
         }
 
         public async Task<bool> DeleteExpense(Guid expenseId)
@@ -103,20 +104,41 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
             return expense;
         }
 
-        public async Task<List<Expense>> GetExpensesByCategories(Guid accountId, FilterExpenseParams _params)
+        public async Task<List<Expense>> GetExpensesByCategoriesAndPage(Guid accountId, ExpenseParams _params)
         {
-            var expenses = await GetExpenses(accountId);
-            return expenses.Where(e => _params.Categories.Contains(e.Category.Title)).ToList();
+            string[] categories = _params.Categories.Split(',');
+            var expenses = await GetExpensesAndSort(accountId, _params);
+            return expenses.Where(e => categories.Contains(e.Category.Title.ToLower())).ToList();
         }
 
-        public async Task<List<Expense>> GetExpensesByTimeInterval(Guid accountId, FilterExpenseParams _params)
+        public async Task<List<Expense>> GetExpensesByCategories(Guid accountId, ExpenseParams _params)
+        {
+            string[] categories = _params.Categories.Split(',');
+            var expenses = await GetExpenses(accountId);
+            return expenses.Where(e => categories.Contains(e.Category.Title.ToLower())).ToList();
+        }
+
+       
+
+        public async Task<List<Expense>> GetExpensesByTimeIntervalAndPage(Guid accountId, ExpenseParams _params)
+        {
+            var startDate = DateTime.Parse(_params.StartDate);
+            var endDate = DateTime.Parse(_params.EndDate);
+
+            var expenses = await GetExpensesAndSort(accountId, _params);
+
+            return expenses.Where(e => DateTime.Parse(e.CreatedAt) >= startDate && 
+            DateTime.Parse(e.CreatedAt) <= endDate).ToList();
+        }
+
+        public async Task<List<Expense>> GetExpensesByTimeInterval(Guid accountId, ExpenseParams _params)
         {
             var startDate = DateTime.Parse(_params.StartDate);
             var endDate = DateTime.Parse(_params.EndDate);
 
             var expenses = await GetExpenses(accountId);
 
-            return expenses.Where(e => DateTime.Parse(e.CreatedAt) >= startDate && 
+            return expenses.Where(e => DateTime.Parse(e.CreatedAt) >= startDate &&
             DateTime.Parse(e.CreatedAt) <= endDate).ToList();
         }
     }

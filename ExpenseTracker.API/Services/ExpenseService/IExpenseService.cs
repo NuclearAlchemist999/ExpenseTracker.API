@@ -9,10 +9,9 @@ namespace ExpenseTracker.API.Services.ExpenseService
     public interface IExpenseService
     {
         Task<ExpenseDto> AddExpense(CreateExpenseRequestDto request, string cookie);
-        Task<AllExpensesResponseDto> GetAllExpensesByYearAndMonth(ExpenseParams param, string cookie);
         Task<Expense> GetExpense(Guid expenseId);
         Task<bool> DeleteExpense(Guid id);
         Task<Expense> UpdateExpense(Guid id, UpdateExpenseRequestDto request);
-        Task<List<ExpenseDto>> FilterExpenses(string cookie, FilterExpenseParams param);
+        Task<AllExpensesResponseDto> FilterExpenses(ExpenseParams _params, string cookie);
     }
 }

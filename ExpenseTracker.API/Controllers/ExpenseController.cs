@@ -40,17 +40,6 @@ namespace ExpenseTracker.API.Controllers
         }
 
         [Authorize]
-        [HttpGet]
-        public async Task<IActionResult> GetAllExpensesByYearAndMonth([FromQuery] ExpenseParams _params)
-        { 
-            var cookie = Request.Cookies["accountId"];
-
-            var expenses = await _expenseService.GetAllExpensesByYearAndMonth(_params, cookie);
-           
-            return Ok(expenses);
-        }
-
-        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteExpense(Guid id)
         {
@@ -76,20 +65,21 @@ namespace ExpenseTracker.API.Controllers
             return Ok(updatedExpense.ToExpenseDto());
         }
 
-        [HttpPost("filter")]
-        public async Task<IActionResult> FilterExpenses(FilterExpenseParams _params)
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> FilterExpenses([FromQuery] ExpenseParams _params)
         {
             var cookie = Request.Cookies["accountId"];
 
-            if (_params.StartDate != null && _params.EndDate != null)
-            {
-                if (DateTime.Parse(_params.StartDate) > DateTime.Parse(_params.EndDate))
-                {
-                    return BadRequest();
-                }
-            }
+            //if (_params.StartDate != null && _params.EndDate != null)
+            //{
+            //    if (DateTime.Parse(_params.StartDate) > DateTime.Parse(_params.EndDate))
+            //    {
+            //        return BadRequest();
+            //    }
+            //}
 
-            var expenses = await _expenseService.FilterExpenses(cookie, _params);
+            var expenses = await _expenseService.FilterExpenses(_params, cookie);
             
             return Ok(expenses);
         }
