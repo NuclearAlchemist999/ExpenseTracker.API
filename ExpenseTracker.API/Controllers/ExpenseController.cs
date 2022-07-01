@@ -83,5 +83,13 @@ namespace ExpenseTracker.API.Controllers
             
             return Ok(expenses);
         }
+
+
+        [Authorize]
+        [HttpGet("test")]
+        public async Task<IActionResult> Test([FromQuery] ExpenseParams _params)
+        {
+            return Ok();
+        }
     }
 }

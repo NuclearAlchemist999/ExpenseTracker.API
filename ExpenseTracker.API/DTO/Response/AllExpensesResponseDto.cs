@@ -1,4 +1,5 @@
 ﻿using ExpenseTracker.API.DTO.DtoModels;
+using ExpenseTracker.API.Models;
 
 namespace ExpenseTracker.API.DTO.Response
 {

@@ -52,20 +52,20 @@ namespace ExpenseTracker.API.Services.ExpenseService
             if (_params.StartDate == null && _params.EndDate == null && _params.Categories == null)
             {
                 shortMonth = _params.Month.ToShortMonth();
-                totalExpenses = await _expenseRepo.GetExpensesByYearAndMonth(accountId, _params, shortMonth);
-                expenses = await _expenseRepo.GetExpensesByYearAndMonthAndPage(accountId, _params, shortMonth);
+                totalExpenses = await _expenseRepo.GetExpensesByYearAndMonth(accountId, _params, shortMonth, false);
+                expenses = await _expenseRepo.GetExpensesByYearAndMonth(accountId, _params, shortMonth, true);
             }
 
             if (_params.StartDate == null && _params.EndDate == null && _params.Month == null && _params.Year == null)
             {
-                totalExpenses = await _expenseRepo.GetExpensesByCategories(accountId, _params);
-                expenses = await _expenseRepo.GetExpensesByCategoriesAndPage(accountId, _params);
+                totalExpenses = await _expenseRepo.GetExpensesByCategories(accountId, _params, false);
+                expenses = await _expenseRepo.GetExpensesByCategories(accountId, _params, true);
             }
 
             if (_params.Categories == null && _params.Month == null && _params.Year == null)
             {
-                totalExpenses = await _expenseRepo.GetExpensesByTimeInterval(accountId, _params);
-                expenses = await _expenseRepo.GetExpensesByTimeIntervalAndPage(accountId, _params);
+                totalExpenses = await _expenseRepo.GetExpensesByTimeInterval(accountId, _params, false);
+                expenses = await _expenseRepo.GetExpensesByTimeInterval(accountId, _params, true);
             }
 
             double totalPages = Math.Ceiling((double)totalExpenses.Count() / (double)_params.Limit);
@@ -76,9 +76,10 @@ namespace ExpenseTracker.API.Services.ExpenseService
                 NumberOfExpenses = totalExpenses.Count(),
                 TotalCost = (decimal)totalExpenses.Sum(e => e.Price),
                 TotalPages = (int)totalPages
-            };  
+            };
 
             return expenseValues;
+          
         }
 
         public async Task<bool> DeleteExpense(Guid id)

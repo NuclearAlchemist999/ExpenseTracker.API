@@ -8,14 +8,12 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
     {
         Task<Expense> GetExpense(Guid expenseId);
         Task<Expense> AddExpense(Expense expense);
-        Task<List<Expense>> GetExpensesByYearAndMonth(Guid accountId, ExpenseParams _params, string shortMonth);
-        Task<List<Expense>> GetExpensesByYearAndMonthAndPage(Guid accountId, ExpenseParams _params, string shortMonth);
+        Task<List<Expense>> GetExpensesByYearAndMonth(Guid accountId, ExpenseParams _params, string shortMonth,
+            bool withPages);      
         Task<bool> DeleteExpense(Guid expenseId);
         Task<Expense> UpdateExpense(Guid id, UpdateExpenseRequestDto request);
-        Task<List<Expense>> GetExpenses(Guid accountId);
-        Task<List<Expense>> GetExpensesByCategoriesAndPage(Guid accountId, ExpenseParams _params);
-        Task<List<Expense>> GetExpensesByCategories(Guid accountId, ExpenseParams _params);
-        Task<List<Expense>> GetExpensesByTimeIntervalAndPage(Guid accountId, ExpenseParams _params);
-        Task<List<Expense>> GetExpensesByTimeInterval(Guid accountId, ExpenseParams _params);
+        Task<List<Expense>> GetExpenses(Guid accountId, ExpenseParams _params);
+        Task<List<Expense>> GetExpensesByCategories(Guid accountId, ExpenseParams _params, bool withPages);
+        Task<List<Expense>> GetExpensesByTimeInterval(Guid accountId, ExpenseParams _params, bool withPages);
     }
 }
