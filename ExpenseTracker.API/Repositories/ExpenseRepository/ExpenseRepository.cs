@@ -166,5 +166,25 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
                 .Skip(Skip(_params)).Take(_params.Limit).ToList()
                 : expenses.Where(e => YearAndMonth(e, (int)_params.Year, shortMonth) && GetTitles(e, GetCategories(_params))).ToList();
         }
-    }
+
+        public async Task<List<Expense>> GetExpensesByYearAndCategories(Guid accountId, ExpenseParams _params, bool withPages)
+        {
+            var expenses = await GetExpenses(accountId, _params);
+
+            return withPages
+                ? expenses.Where(e => e.CreatedYear == _params.Year && GetTitles(e, GetCategories(_params)))
+                .Skip(Skip(_params)).Take(_params.Limit).ToList()
+                : expenses.Where(e => e.CreatedYear == _params.Year && GetTitles(e, GetCategories(_params))).ToList();
+        }
+
+        public async Task<List<Expense>> GetExpensesByMonthAndCategories(Guid accountId, ExpenseParams _params, string shortMonth, bool withPages)
+        {
+            var expenses = await GetExpenses(accountId, _params);
+
+            return withPages
+                ? expenses.Where(e => e.CreatedYear == DateTime.Now.Year && e.ShortMonth == shortMonth && GetTitles(e, GetCategories(_params)))
+                .Skip(Skip(_params)).Take(_params.Limit).ToList()
+                : expenses.Where(e => e.CreatedYear == DateTime.Now.Year && e.ShortMonth == shortMonth && GetTitles(e, GetCategories(_params))).ToList();
+        }
+    } 
 }
