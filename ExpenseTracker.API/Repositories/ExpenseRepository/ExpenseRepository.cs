@@ -147,5 +147,14 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
                 ? expenses.Where(e => e.CreatedYear == _params.Year).Skip(Skip(_params)).Take(_params.Limit).ToList()
                 : expenses.Where(e => e.CreatedYear == _params.Year).ToList();
         }
+
+        public async Task<List<Expense>> GetExpensesByMonth(Guid accountId, ExpenseParams _params, string shortMonth, bool withPages)
+        {
+            var expenses = await GetExpenses(accountId, _params);
+
+            return withPages
+                ? expenses.Where(e => e.ShortMonth == shortMonth && e.CreatedYear == DateTime.Now.Year).Skip(Skip(_params)).Take(_params.Limit).ToList()
+                : expenses.Where(e => e.ShortMonth == shortMonth && e.CreatedYear == DateTime.Now.Year).ToList();
+        }
     }
 }
