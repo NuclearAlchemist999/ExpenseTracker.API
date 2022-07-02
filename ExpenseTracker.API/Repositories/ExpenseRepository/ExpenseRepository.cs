@@ -119,13 +119,24 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
 
             return withPages
                 ? expenses.Where(e => GetTimeInterval(DateTime.Parse(_params.StartDate), DateTime.Parse(_params.EndDate), e)).Skip(Skip(_params)).Take(_params.Limit).ToList()
-                : expenses.Where(e => GetTimeInterval(DateTime.Parse(_params.StartDate),DateTime.Parse(_params.EndDate), e)).ToList();
+                : expenses.Where(e => GetTimeInterval(DateTime.Parse(_params.StartDate), DateTime.Parse(_params.EndDate), e)).ToList();
         }
 
         public bool GetTimeInterval(DateTime startDate, DateTime endDate, Expense expense)
         {
             return DateTime.Parse(expense.CreatedAt) >= startDate &&
             DateTime.Parse(expense.CreatedAt) <= endDate;
+        }
+
+        public async Task<List<Expense>> GetExpensesByTimeIntervalAndCategories(Guid accountId, ExpenseParams _params, bool withPages)
+        {
+            var expenses = await GetExpenses(accountId, _params);
+
+            return withPages
+                ? expenses.Where(e => GetTimeInterval(DateTime.Parse(_params.StartDate), DateTime.Parse(_params.EndDate), e) && GetTitles(e, GetCategories(_params)))
+                .Skip(Skip(_params)).Take(_params.Limit).ToList()
+                : expenses.Where(e => GetTimeInterval(DateTime.Parse(_params.StartDate), DateTime.Parse(_params.EndDate), e) && GetTitles(e, GetCategories(_params)))
+                .ToList();
         }
     }
 }

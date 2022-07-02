@@ -68,6 +68,13 @@ namespace ExpenseTracker.API.Services.ExpenseService
                 expenses = await _expenseRepo.GetExpensesByTimeInterval(accountId, _params, true);
             }
 
+            if (_params.Month == null && _params.Year == null && _params.Categories != null &&
+                _params.StartDate != null && _params.EndDate != null)
+            {
+                totalExpenses = await _expenseRepo.GetExpensesByTimeIntervalAndCategories(accountId, _params, false);
+                expenses = await _expenseRepo.GetExpensesByTimeIntervalAndCategories(accountId, _params, true);
+            }
+
             double totalPages = Math.Ceiling((double)totalExpenses.Count() / (double)_params.Limit);
 
             var expenseValues = new AllExpensesResponseDto

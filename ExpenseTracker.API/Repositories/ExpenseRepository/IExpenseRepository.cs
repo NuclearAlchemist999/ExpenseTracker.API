@@ -15,5 +15,7 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
         Task<List<Expense>> GetExpenses(Guid accountId, ExpenseParams _params);
         Task<List<Expense>> GetExpensesByCategories(Guid accountId, ExpenseParams _params, bool withPages);
         Task<List<Expense>> GetExpensesByTimeInterval(Guid accountId, ExpenseParams _params, bool withPages);
+        Task<List<Expense>> GetExpensesByTimeIntervalAndCategories(Guid accountId, ExpenseParams _params,
+            bool withPages);
     }
 }
