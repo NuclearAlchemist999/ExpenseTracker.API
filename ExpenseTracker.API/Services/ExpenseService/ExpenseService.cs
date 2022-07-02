@@ -49,20 +49,23 @@ namespace ExpenseTracker.API.Services.ExpenseService
             var totalExpenses = new List<Expense>();
             var expenses = new List<Expense>();
 
-            if (_params.StartDate == null && _params.EndDate == null && _params.Categories == null)
+            if (_params.Month != null && _params.Year != null && _params.Categories == null &&
+                _params.StartDate == null && _params.EndDate == null)
             {
                 shortMonth = _params.Month.ToShortMonth();
                 totalExpenses = await _expenseRepo.GetExpensesByYearAndMonth(accountId, _params, shortMonth, false);
                 expenses = await _expenseRepo.GetExpensesByYearAndMonth(accountId, _params, shortMonth, true);
             }
 
-            if (_params.StartDate == null && _params.EndDate == null && _params.Month == null && _params.Year == null)
+            if (_params.Month == null && _params.Year == null && _params.Categories != null &&
+                _params.StartDate == null && _params.EndDate == null)
             {
                 totalExpenses = await _expenseRepo.GetExpensesByCategories(accountId, _params, false);
                 expenses = await _expenseRepo.GetExpensesByCategories(accountId, _params, true);
             }
 
-            if (_params.Categories == null && _params.Month == null && _params.Year == null)
+            if (_params.Month == null && _params.Year == null && _params.Categories == null &&
+                _params.StartDate != null && _params.EndDate != null)
             {
                 totalExpenses = await _expenseRepo.GetExpensesByTimeInterval(accountId, _params, false);
                 expenses = await _expenseRepo.GetExpensesByTimeInterval(accountId, _params, true);
@@ -73,6 +76,12 @@ namespace ExpenseTracker.API.Services.ExpenseService
             {
                 totalExpenses = await _expenseRepo.GetExpensesByTimeIntervalAndCategories(accountId, _params, false);
                 expenses = await _expenseRepo.GetExpensesByTimeIntervalAndCategories(accountId, _params, true);
+            }
+            if (_params.Month == null && _params.Year != null && _params.Categories == null &&
+                _params.StartDate == null && _params.EndDate == null)
+            {
+                totalExpenses = await _expenseRepo.GetExpensesByYear(accountId, _params, false);
+                expenses = await _expenseRepo.GetExpensesByYear(accountId, _params, true);
             }
 
             double totalPages = Math.Ceiling((double)totalExpenses.Count() / (double)_params.Limit);
