@@ -20,5 +20,7 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
         Task<List<Expense>> GetExpensesByYear(Guid accountId, ExpenseParams _params, bool withPages);
         Task<List<Expense>> GetExpensesByMonth(Guid accountId, ExpenseParams _params, string shortMonth,
             bool withPages);
+        Task<List<Expense>> GetExpensesByMonthYearAndCategories(Guid accountId, ExpenseParams _params,
+            string shortMonth, bool withPages);
     }
 }

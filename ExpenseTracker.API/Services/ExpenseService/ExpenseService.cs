@@ -90,6 +90,13 @@ namespace ExpenseTracker.API.Services.ExpenseService
                 totalExpenses = await _expenseRepo.GetExpensesByMonth(accountId, _params, shortMonth, false);
                 expenses = await _expenseRepo.GetExpensesByMonth(accountId, _params, shortMonth, true);
             }
+            if (_params.Month != null && _params.Year != null && _params.Categories != null &&
+                _params.StartDate == null && _params.EndDate == null)
+            {
+                shortMonth = _params.Month.ToShortMonth();
+                totalExpenses = await _expenseRepo.GetExpensesByMonthYearAndCategories(accountId, _params, shortMonth, false);
+                expenses = await _expenseRepo.GetExpensesByMonthYearAndCategories(accountId, _params, shortMonth, true);
+            }
 
 
             double totalPages = Math.Ceiling((double)totalExpenses.Count() / (double)_params.Limit);
