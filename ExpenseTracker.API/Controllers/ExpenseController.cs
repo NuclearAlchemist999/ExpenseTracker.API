@@ -71,13 +71,26 @@ namespace ExpenseTracker.API.Controllers
         {
             var cookie = Request.Cookies["accountId"];
 
-            //if (_params.StartDate != null && _params.EndDate != null)
-            //{
-            //    if (DateTime.Parse(_params.StartDate) > DateTime.Parse(_params.EndDate))
-            //    {
-            //        return BadRequest();
-            //    }
-            //}
+            if (_params.StartDate != null || _params.EndDate != null)
+            {
+                if (_params.StartDate != null && _params.EndDate == null || _params.StartDate == null &&
+                    _params.EndDate != null)
+                {
+                    return BadRequest("Both start date and end date have to be combined.");
+                }
+                if (DateTime.Parse(_params.StartDate) > DateTime.Parse(_params.EndDate))
+                {
+                    return BadRequest("Start date cannot be larger than end date.");
+                }
+                if (_params.Year != null || _params.Month != null)
+                {
+                    return BadRequest("Month or year cannot be combined with start date or end date.");
+                }              
+            }
+            if (_params.Limit == null || _params.Page == null)
+            {
+                return BadRequest("Limit and page have to be entered.");
+            }
 
             var expenses = await _expenseService.FilterExpenses(_params, cookie);
             

@@ -49,6 +49,14 @@ namespace ExpenseTracker.API.Services.ExpenseService
             var totalExpenses = new List<Expense>();
             var expenses = new List<Expense>();
 
+            if (_params.Month == null && _params.Year == null && _params.Categories == null &&
+                _params.StartDate == null && _params.EndDate == null)
+            {
+                shortMonth = DateTime.Now.ToString().ToShortMonth();
+                totalExpenses = await _expenseRepo.GetExpensesByDefault(accountId, _params, shortMonth, false);
+                expenses = await _expenseRepo.GetExpensesByDefault(accountId, _params, shortMonth, true);
+            }
+
             if (_params.Month != null && _params.Year != null && _params.Categories == null &&
                 _params.StartDate == null && _params.EndDate == null)
             {
@@ -109,7 +117,7 @@ namespace ExpenseTracker.API.Services.ExpenseService
                 shortMonth = _params.Month.ToShortMonth();
                 totalExpenses = await _expenseRepo.GetExpensesByMonthAndCategories(accountId, _params, shortMonth, false);
                 expenses = await _expenseRepo.GetExpensesByMonthAndCategories(accountId, _params, shortMonth, true);
-            }
+            }        
 
             double totalPages = Math.Ceiling((double)totalExpenses.Count() / (double)_params.Limit);
 

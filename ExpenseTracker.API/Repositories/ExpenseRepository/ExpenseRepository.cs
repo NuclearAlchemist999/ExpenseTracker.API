@@ -54,7 +54,7 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
             var expenses = await GetExpenses(accountId, _params);
 
             return withPages
-                ? expenses.Where(e => YearAndMonth(e, (int)_params.Year, shortMonth)).Skip(Skip(_params)).Take(_params.Limit).ToList()
+                ? expenses.Where(e => YearAndMonth(e, (int)_params.Year, shortMonth)).Skip(Skip(_params)).Take((int)_params.Limit).ToList()
                 : expenses.Where(e => YearAndMonth(e, (int)_params.Year, shortMonth)).ToList();  
         }
 
@@ -65,7 +65,7 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
     
         public int Skip(ExpenseParams _params)
         {
-            return _params.Limit * (_params.Page - 1);
+            return (int)_params.Limit * ((int)_params.Page - 1);
         }
 
         public async Task<bool> DeleteExpense(Guid expenseId)
@@ -99,7 +99,7 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
             var expenses = await GetExpenses(accountId, _params);
 
             return withPages
-                ? expenses.Where(e => GetTitles(e, GetCategories(_params))).Skip(Skip(_params)).Take(_params.Limit).ToList()
+                ? expenses.Where(e => GetTitles(e, GetCategories(_params))).Skip(Skip(_params)).Take((int)_params.Limit).ToList()
                 : expenses.Where(e => GetTitles(e, GetCategories(_params))).ToList();
         }
 
@@ -118,7 +118,7 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
             var expenses = await GetExpenses(accountId, _params);
 
             return withPages
-                ? expenses.Where(e => GetTimeInterval(DateTime.Parse(_params.StartDate), DateTime.Parse(_params.EndDate), e)).Skip(Skip(_params)).Take(_params.Limit).ToList()
+                ? expenses.Where(e => GetTimeInterval(DateTime.Parse(_params.StartDate), DateTime.Parse(_params.EndDate), e)).Skip(Skip(_params)).Take((int)_params.Limit).ToList()
                 : expenses.Where(e => GetTimeInterval(DateTime.Parse(_params.StartDate), DateTime.Parse(_params.EndDate), e)).ToList();
         }
 
@@ -134,7 +134,7 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
 
             return withPages
                 ? expenses.Where(e => GetTimeInterval(DateTime.Parse(_params.StartDate), DateTime.Parse(_params.EndDate), e) && GetTitles(e, GetCategories(_params)))
-                .Skip(Skip(_params)).Take(_params.Limit).ToList()
+                .Skip(Skip(_params)).Take((int)_params.Limit).ToList()
                 : expenses.Where(e => GetTimeInterval(DateTime.Parse(_params.StartDate), DateTime.Parse(_params.EndDate), e) && GetTitles(e, GetCategories(_params)))
                 .ToList();
         }
@@ -144,7 +144,7 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
             var expenses = await GetExpenses(accountId, _params);
 
             return withPages
-                ? expenses.Where(e => e.CreatedYear == _params.Year).Skip(Skip(_params)).Take(_params.Limit).ToList()
+                ? expenses.Where(e => e.CreatedYear == _params.Year).Skip(Skip(_params)).Take((int)_params.Limit).ToList()
                 : expenses.Where(e => e.CreatedYear == _params.Year).ToList();
         }
 
@@ -153,7 +153,7 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
             var expenses = await GetExpenses(accountId, _params);
 
             return withPages
-                ? expenses.Where(e => e.ShortMonth == shortMonth && e.CreatedYear == DateTime.Now.Year).Skip(Skip(_params)).Take(_params.Limit).ToList()
+                ? expenses.Where(e => e.ShortMonth == shortMonth && e.CreatedYear == DateTime.Now.Year).Skip(Skip(_params)).Take((int)_params.Limit).ToList()
                 : expenses.Where(e => e.ShortMonth == shortMonth && e.CreatedYear == DateTime.Now.Year).ToList();
         }
 
@@ -163,7 +163,7 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
 
             return withPages
                 ? expenses.Where(e => YearAndMonth(e, (int)_params.Year, shortMonth) && GetTitles(e, GetCategories(_params)))
-                .Skip(Skip(_params)).Take(_params.Limit).ToList()
+                .Skip(Skip(_params)).Take((int)_params.Limit).ToList()
                 : expenses.Where(e => YearAndMonth(e, (int)_params.Year, shortMonth) && GetTitles(e, GetCategories(_params))).ToList();
         }
 
@@ -173,7 +173,7 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
 
             return withPages
                 ? expenses.Where(e => e.CreatedYear == _params.Year && GetTitles(e, GetCategories(_params)))
-                .Skip(Skip(_params)).Take(_params.Limit).ToList()
+                .Skip(Skip(_params)).Take((int)_params.Limit).ToList()
                 : expenses.Where(e => e.CreatedYear == _params.Year && GetTitles(e, GetCategories(_params))).ToList();
         }
 
@@ -183,8 +183,17 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
 
             return withPages
                 ? expenses.Where(e => e.CreatedYear == DateTime.Now.Year && e.ShortMonth == shortMonth && GetTitles(e, GetCategories(_params)))
-                .Skip(Skip(_params)).Take(_params.Limit).ToList()
+                .Skip(Skip(_params)).Take((int)_params.Limit).ToList()
                 : expenses.Where(e => e.CreatedYear == DateTime.Now.Year && e.ShortMonth == shortMonth && GetTitles(e, GetCategories(_params))).ToList();
+        }
+
+        public async Task<List<Expense>> GetExpensesByDefault(Guid accountId, ExpenseParams _params, string shortMonth, bool withPages)
+        {
+            var expenses = await GetExpenses(accountId, _params);
+
+            return withPages
+                ? expenses.Where(e => e.CreatedYear == DateTime.Now.Year && e.ShortMonth == shortMonth).Skip(Skip(_params)).Take((int)_params.Limit).ToList()
+                : expenses.Where(e => e.CreatedYear == DateTime.Now.Year && e.ShortMonth == shortMonth).ToList();
         }
     } 
 }
