@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ExpenseTracker.API.Migrations
 {
     [DbContext(typeof(ExTrackerDbContext))]
-    [Migration("20220627122816_Initial")]
+    [Migration("20220703183600_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

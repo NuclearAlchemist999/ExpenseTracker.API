@@ -6,6 +6,7 @@ using ExpenseTracker.API.ParamModels;
 using ExpenseTracker.API.Repositories.CategoryRepository;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
+using System.Web;
 
 namespace ExpenseTracker.API.Repositories.ExpenseRepository
 {
@@ -23,7 +24,7 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
         {
             return await _exTrackContext.Expenses
                         .Include(e => e.Category)
-                        .Where(e => e.AccountId == accountId)
+                        .Where(e => e.AccountId == accountId)          
                         .Sort(_params.OrderBy)
                         .ToListAsync();
         }
@@ -110,7 +111,7 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
 
         public bool GetTitles(Expense expense, string[] categories)
         {
-            return categories.Contains(expense.Category.Title.ToLower());
+             return categories.Contains(expense.Category.Title.ToLower());
         }
 
         public async Task<List<Expense>> GetExpensesByTimeInterval(Guid accountId, ExpenseParams _params, bool withPages)

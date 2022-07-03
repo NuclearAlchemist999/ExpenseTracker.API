@@ -19,7 +19,7 @@ namespace ExpenseTracker.API
         public static void ConfigureDatabase(this IServiceCollection services, IConfiguration configuration)
         {
 #if DEBUG
-            var connectionString = configuration["ConnectionStrings:Heroku"];
+            var connectionString = configuration["ConnectionStrings:Elephant"];
 #else
             var dbHost = Environment.GetEnvironmentVariable("POSTGRES_HOST");
             var dbUser = Environment.GetEnvironmentVariable("POSTGRES_USER");
