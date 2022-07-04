@@ -12,7 +12,7 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
             bool withPages);      
         Task<bool> DeleteExpense(Guid expenseId);
         Task<Expense> UpdateExpense(Guid id, UpdateExpenseRequestDto request);
-        Task<List<Expense>> GetExpenses(Guid accountId, ExpenseParams _params);
+        Task<List<Expense>> GetExpenses(Guid accountId, string orderBy);
         Task<List<Expense>> GetExpensesByCategories(Guid accountId, ExpenseParams _params, bool withPages);
         Task<List<Expense>> GetExpensesByTimeInterval(Guid accountId, ExpenseParams _params, bool withPages);
         Task<List<Expense>> GetExpensesByTimeIntervalAndCategories(Guid accountId, ExpenseParams _params,
@@ -27,5 +27,6 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
             bool withPages);
         Task<List<Expense>> GetExpensesByDefault(Guid accountId, ExpenseParams _params, string shortMonth,
             bool withPages);
+        Task<List<Expense>> SearchExpenses(Guid accountId, ExpenseParams _params, bool withPages);
     }
 }

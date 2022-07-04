@@ -10,5 +10,6 @@
         public string Categories { get; set; }
         public string StartDate { get; set; }
         public string EndDate { get; set; }
+        public string SearchQuery { get; set; } 
     }
 }

@@ -13,5 +13,6 @@ namespace ExpenseTracker.API.Services.ExpenseService
         Task<bool> DeleteExpense(Guid id);
         Task<Expense> UpdateExpense(Guid id, UpdateExpenseRequestDto request);
         Task<AllExpensesResponseDto> FilterExpenses(ExpenseParams _params, string cookie);
+        List<string> ValidateFilterParams(ExpenseParams _params);
     }
 }

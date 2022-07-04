@@ -1,5 +1,6 @@
 ﻿using ExpenseTracker.API.DTO.Converters;
 using ExpenseTracker.API.DTO.Request;
+using ExpenseTracker.API.DTO.Response;
 using ExpenseTracker.API.ParamModels;
 using ExpenseTracker.API.Services.ExpenseService;
 using Microsoft.AspNetCore.Authorization;
@@ -72,38 +73,22 @@ namespace ExpenseTracker.API.Controllers
         {
             var cookie = Request.Cookies["accountId"];
 
-            if (_params.StartDate != null || _params.EndDate != null)
+            var errors = _expenseService.ValidateFilterParams(_params);
+
+            if (errors.Count > 0)
             {
-                if (_params.StartDate != null && _params.EndDate == null || _params.StartDate == null &&
-                    _params.EndDate != null)
+                var response = new ValidateFilterResponse
                 {
-                    return BadRequest("Both start date and end date have to be combined.");
-                }
-                if (DateTime.Parse(_params.StartDate) > DateTime.Parse(_params.EndDate))
-                {
-                    return BadRequest("Start date cannot be larger than end date.");
-                }
-                if (_params.Year != null || _params.Month != null)
-                {
-                    return BadRequest("Month or year cannot be combined with start date or end date.");
-                }              
-            }
-            if (_params.Limit == null || _params.Page == null)
-            {
-                return BadRequest("Limit and page have to be entered.");
+                    Success = false,
+                    Errors = errors
+                };
+
+                return BadRequest(response);
             }
 
             var expenses = await _expenseService.FilterExpenses(_params, cookie);
             
             return Ok(expenses);
-        }
-
-
-        [Authorize]
-        [HttpGet("test")]
-        public async Task<IActionResult> Test([FromQuery] ExpenseParams _params)
-        {
-            return Ok();
         }
     }
 }
