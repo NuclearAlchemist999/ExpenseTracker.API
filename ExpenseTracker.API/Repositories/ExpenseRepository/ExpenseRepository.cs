@@ -204,7 +204,7 @@ namespace ExpenseTracker.API.Repositories.ExpenseRepository
             return withPages
                ? expenses.Where(e => e.Category.Title.ToLower().Contains(_params.SearchQuery.ToLower()) ||
                e.Title.ToLower().Contains(_params.SearchQuery.ToLower()) || e.CreatedYear.ToString() == _params.SearchQuery).Skip(Skip(_params)).Take((int)_params.Limit).ToList()
-               : expenses.Where(e => GetTitles(e, GetCategories(_params.SearchQuery)) ||
+               : expenses.Where(e => e.Category.Title.ToLower().Contains(_params.SearchQuery.ToLower()) ||
                e.Title.ToLower().Contains(_params.SearchQuery.ToLower()) || e.CreatedYear.ToString() == _params.SearchQuery).ToList();
         }
     } 
