@@ -2,6 +2,7 @@
 using ExpenseTracker.API.DTO.DtoModels;
 using ExpenseTracker.API.DTO.Request;
 using ExpenseTracker.API.DTO.Response;
+using ExpenseTracker.API.Exceptions;
 using ExpenseTracker.API.Extensions;
 using ExpenseTracker.API.Models;
 using ExpenseTracker.API.ParamModels;
@@ -17,9 +18,13 @@ namespace ExpenseTracker.API.Services.ExpenseService
             _expenseRepo = expenseRepo;
         }
 
-        public async Task<Expense> GetExpense(Guid expenseId)
+        public async Task<ExpenseDto> GetExpense(Guid expenseId)
         {
-            return await _expenseRepo.GetExpense(expenseId);
+            var expense = await _expenseRepo.GetExpense(expenseId);
+
+            if (expense is null) throw new ExpenseNotFoundException(expenseId);
+
+            return expense.ToExpenseDto();
         }
         public async Task<ExpenseDto> AddExpense(CreateExpenseRequestDto request, string cookie)
         {
@@ -188,12 +193,18 @@ namespace ExpenseTracker.API.Services.ExpenseService
 
         public async Task<bool> DeleteExpense(Guid id)
         {
+            var expense = await _expenseRepo.GetExpense(id);
+
+            if (expense is null) throw new ExpenseNotFoundException(id);
+
             return await _expenseRepo.DeleteExpense(id);
         }
 
-        public async Task<Expense> UpdateExpense(Guid id, UpdateExpenseRequestDto request)
+        public async Task<ExpenseDto> UpdateExpense(Guid id, UpdateExpenseRequestDto request)
         {
             var expense = await _expenseRepo.GetExpense(id);
+
+            if (expense is null) throw new ExpenseNotFoundException(id);
 
             expense.Title = request.Title;
             expense.CategoryId = Guid.Parse(request.CategoryId);
@@ -202,8 +213,10 @@ namespace ExpenseTracker.API.Services.ExpenseService
             expense.CreatedYear = DateTime.Parse(request.CreatedAt).Year;
             expense.ShortMonth = request.CreatedAt.ToShortMonth();
             expense.UpdatedAt = DateTime.UtcNow;
-            
-            return await _expenseRepo.UpdateExpense(expense);
+
+            await _expenseRepo.UpdateExpense(expense);
+
+            return expense.ToExpenseDto(); 
         }
         public List<string> ValidateFilterParams(ExpenseParams _params)
         {

@@ -25,9 +25,7 @@ namespace ExpenseTracker.API.Controllers
         {
             var expense = await _expenseService.GetExpense(id);
 
-            if (expense == null) return NotFound(); 
-
-            return Ok(expense.ToExpenseDto());
+            return Ok(expense);
         }
 
         [Authorize]
@@ -45,10 +43,6 @@ namespace ExpenseTracker.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteExpense(Guid id)
         {
-            var expense = await _expenseService.GetExpense(id);
-
-            if (expense == null) return NotFound();
-
             var isDeleted = await _expenseService.DeleteExpense(id);
 
             return isDeleted ? Ok() : StatusCode(500, "Could not delete expense.");
@@ -58,13 +52,9 @@ namespace ExpenseTracker.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateExpense(Guid id, UpdateExpenseRequestDto request)
         {
-            var expense = await _expenseService.GetExpense(id);
-
-            if (expense == null) return NotFound();
-
             var updatedExpense = await _expenseService.UpdateExpense(id, request);
 
-            return Ok(updatedExpense.ToExpenseDto());
+            return Ok(updatedExpense);
         }
 
         [Authorize]
