@@ -49,70 +49,106 @@ namespace ExpenseTracker.API.Services.ExpenseService
             var totalExpenses = new List<Expense>();
             var expenses = new List<Expense>();
 
+            var basicExp = await _expenseRepo.GetExpenses(accountId, _params.OrderBy);
+
             if (_params.Month == null && _params.Year == null && _params.Categories == null &&
                 _params.StartDate == null && _params.EndDate == null && _params.SearchQuery == null)
             {
                 shortMonth = DateTime.Now.ToString().ToShortMonth();
-                totalExpenses = await _expenseRepo.GetExpensesByDefault(accountId, _params, shortMonth, false);
-                expenses = await _expenseRepo.GetExpensesByDefault(accountId, _params, shortMonth, true);
+               
+                totalExpenses = basicExp.Where(e => e.CreatedYear == DateTime.Now.Year && e.ShortMonth == shortMonth).ToList();
+               
+                expenses = basicExp.Where(e => e.CreatedYear == DateTime.Now.Year && e.ShortMonth == shortMonth).Skip(Skip(_params))
+                    .Take((int)_params.Limit).ToList();
             }
 
             if (_params.Month != null && _params.Year != null)
             {
                 shortMonth = _params.Month.ToShortMonth();
-                totalExpenses = await _expenseRepo.GetExpensesByYearAndMonth(accountId, _params, shortMonth, false);
-                expenses = await _expenseRepo.GetExpensesByYearAndMonth(accountId, _params, shortMonth, true);
+               
+                totalExpenses = basicExp.Where(e => e.CreatedYear == _params.Year && e.ShortMonth == shortMonth).ToList();
+                
+                expenses = basicExp.Where(e => e.CreatedYear == _params.Year && e.ShortMonth == shortMonth)
+                    .Skip(Skip(_params)).Take((int)_params.Limit).ToList();
             }
 
             if (_params.Categories != null)
             {
-                totalExpenses = await _expenseRepo.GetExpensesByCategories(accountId, _params, false);
-                expenses = await _expenseRepo.GetExpensesByCategories(accountId, _params, true);
+                totalExpenses = basicExp.Where(e => GetTitles(e, GetCategories(_params.Categories))).ToList();
+               
+                expenses = basicExp.Where(e => GetTitles(e, GetCategories(_params.Categories)))
+                    .Skip(Skip(_params)).Take((int)_params.Limit).ToList();
             }
 
             if (_params.StartDate != null && _params.EndDate != null)
             {
-                totalExpenses = await _expenseRepo.GetExpensesByTimeInterval(accountId, _params, false);
-                expenses = await _expenseRepo.GetExpensesByTimeInterval(accountId, _params, true);
+                totalExpenses = basicExp.Where(e => GetTimeInterval(DateTime.Parse(_params.StartDate), DateTime.Parse
+                    (_params.EndDate), e)).ToList();
+
+                expenses = basicExp.Where(e => GetTimeInterval(DateTime.Parse(_params.StartDate), DateTime.Parse
+                    (_params.EndDate), e)).Skip(Skip(_params)).Take((int)_params.Limit).ToList();
             }
 
             if (_params.Categories != null && _params.StartDate != null && _params.EndDate != null)
             {
-                totalExpenses = await _expenseRepo.GetExpensesByTimeIntervalAndCategories(accountId, _params, false);
-                expenses = await _expenseRepo.GetExpensesByTimeIntervalAndCategories(accountId, _params, true);
+                totalExpenses = basicExp.Where(e => GetTimeInterval(DateTime.Parse(_params.StartDate),
+                    DateTime.Parse(_params.EndDate), e) && GetTitles(e, GetCategories(_params.Categories))).ToList();
+
+                expenses = basicExp.Where(e => GetTimeInterval(DateTime.Parse(_params.StartDate),
+                    DateTime.Parse(_params.EndDate), e) && GetTitles(e, GetCategories(_params.Categories)))
+                   .Skip(Skip(_params)).Take((int)_params.Limit).ToList();
             }
             if (_params.Year != null)
             {
-                totalExpenses = await _expenseRepo.GetExpensesByYear(accountId, _params, false);
-                expenses = await _expenseRepo.GetExpensesByYear(accountId, _params, true);
+                totalExpenses = basicExp.Where(e => e.CreatedYear == _params.Year).ToList();
+
+                expenses = basicExp.Where(e => e.CreatedYear == _params.Year).Skip(Skip(_params)).Take((int)_params.Limit).ToList();
             }
             if (_params.Month != null)
             {
                 shortMonth = _params.Month.ToShortMonth();
-                totalExpenses = await _expenseRepo.GetExpensesByMonth(accountId, _params, shortMonth, false);
-                expenses = await _expenseRepo.GetExpensesByMonth(accountId, _params, shortMonth, true);
+
+                totalExpenses = basicExp.Where(e => e.ShortMonth == shortMonth && e.CreatedYear == DateTime.Now.Year).ToList();
+
+                expenses = basicExp.Where(e => e.ShortMonth == shortMonth && e.CreatedYear == DateTime.Now.Year)
+                    .Skip(Skip(_params)).Take((int)_params.Limit).ToList();
             }
             if (_params.Month != null && _params.Year != null && _params.Categories != null)
             {
                 shortMonth = _params.Month.ToShortMonth();
-                totalExpenses = await _expenseRepo.GetExpensesByMonthYearAndCategories(accountId, _params, shortMonth, false);
-                expenses = await _expenseRepo.GetExpensesByMonthYearAndCategories(accountId, _params, shortMonth, true);
+               
+                totalExpenses = basicExp.Where(e => e.CreatedYear == _params.Year && e.ShortMonth == shortMonth &&
+                    GetTitles(e, GetCategories(_params.Categories))).ToList(); 
+                
+                expenses = basicExp.Where(e => e.CreatedYear == _params.Year && e.ShortMonth == shortMonth && 
+                    GetTitles(e, GetCategories(_params.Categories))).Skip(Skip(_params)).Take((int)_params.Limit).ToList();
             }
             if (_params.Year != null && _params.Categories != null)
             {
-                totalExpenses = await _expenseRepo.GetExpensesByYearAndCategories(accountId, _params, false);
-                expenses = await _expenseRepo.GetExpensesByYearAndCategories(accountId, _params, true);
+                totalExpenses = basicExp.Where(e => e.CreatedYear == _params.Year && 
+                GetTitles(e, GetCategories(_params.Categories))).ToList();
+
+                expenses = basicExp.Where(e => e.CreatedYear == _params.Year && GetTitles(e, GetCategories(_params.Categories)))
+                .Skip(Skip(_params)).Take((int)_params.Limit).ToList();
             }
             if (_params.Month != null && _params.Categories != null)
             {
                 shortMonth = _params.Month.ToShortMonth();
-                totalExpenses = await _expenseRepo.GetExpensesByMonthAndCategories(accountId, _params, shortMonth, false);
-                expenses = await _expenseRepo.GetExpensesByMonthAndCategories(accountId, _params, shortMonth, true);
+               
+                totalExpenses = basicExp.Where(e => e.CreatedYear == DateTime.Now.Year && e.ShortMonth == shortMonth &&
+                GetTitles(e, GetCategories(_params.Categories))).ToList();
+
+                expenses = basicExp.Where(e => e.CreatedYear == DateTime.Now.Year && e.ShortMonth == shortMonth &&
+                GetTitles(e, GetCategories(_params.Categories))).Skip(Skip(_params)).Take((int)_params.Limit).ToList();
             }
             if (_params.SearchQuery != null)
             {
-                totalExpenses = await _expenseRepo.SearchExpenses(accountId, _params, false);
-                expenses = await _expenseRepo.SearchExpenses(accountId, _params, true);
+                totalExpenses = basicExp.Where(e => e.Category.Title.ToLower().Contains(_params.SearchQuery.ToLower()) ||
+                e.Title.ToLower().Contains(_params.SearchQuery.ToLower()) || e.CreatedYear.ToString() == _params.SearchQuery).ToList();
+
+                expenses = basicExp.Where(e => e.Category.Title.ToLower().Contains(_params.SearchQuery.ToLower()) ||
+                e.Title.ToLower().Contains(_params.SearchQuery.ToLower()) || e.CreatedYear.ToString() == _params.SearchQuery)
+                    .Skip(Skip(_params)).Take((int)_params.Limit).ToList();
             }
 
             double totalPages = Math.Ceiling((double)totalExpenses.Count() / (double)_params.Limit);
@@ -129,6 +165,27 @@ namespace ExpenseTracker.API.Services.ExpenseService
           
         }
 
+        public int Skip(ExpenseParams _params)
+        {
+            return (int)_params.Limit * ((int)_params.Page - 1);
+        }
+
+        public string[] GetCategories(string categories)
+        {
+            return categories.Split(',');
+        }
+
+        public bool GetTitles(Expense expense, string[] categories)
+        {
+            return categories.Contains(expense.Category.Title.ToLower());
+        }
+
+        public bool GetTimeInterval(DateTime startDate, DateTime endDate, Expense expense)
+        {
+            return DateTime.Parse(expense.CreatedAt) >= startDate &&
+            DateTime.Parse(expense.CreatedAt) <= endDate;
+        }
+
         public async Task<bool> DeleteExpense(Guid id)
         {
             return await _expenseRepo.DeleteExpense(id);
@@ -136,9 +193,18 @@ namespace ExpenseTracker.API.Services.ExpenseService
 
         public async Task<Expense> UpdateExpense(Guid id, UpdateExpenseRequestDto request)
         {
-            return await _expenseRepo.UpdateExpense(id, request);
-        }
+            var expense = await _expenseRepo.GetExpense(id);
 
+            expense.Title = request.Title;
+            expense.CategoryId = Guid.Parse(request.CategoryId);
+            expense.Price = request.Price;
+            expense.CreatedAt = request.CreatedAt;
+            expense.CreatedYear = DateTime.Parse(request.CreatedAt).Year;
+            expense.ShortMonth = request.CreatedAt.ToShortMonth();
+            expense.UpdatedAt = DateTime.UtcNow;
+            
+            return await _expenseRepo.UpdateExpense(expense);
+        }
         public List<string> ValidateFilterParams(ExpenseParams _params)
         {
             var errors = new List<string>();
