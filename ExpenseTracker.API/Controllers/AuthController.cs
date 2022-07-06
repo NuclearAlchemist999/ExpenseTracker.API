@@ -42,13 +42,18 @@ namespace ExpenseTracker.API.Controllers
             await _authService.ValidateLogin(request);
 
             var token = _jwtService.CreateToken(account.Id);
-
+#if DEBUG
+            var domain = "http://localhost:3000";
+#else
+            var domain = Environment.GetEnvironmentVariable("CLIENT_URL");
+#endif
             Response.Cookies.Append("authToken", token, 
                 new CookieOptions
                 {
                     HttpOnly = true,
                     IsEssential = true,
                     Path = "/",
+                    Domain = domain,
                     SameSite = SameSiteMode.None,
                     Secure = true,
                     Expires = DateTime.Now.AddMinutes(720)
@@ -57,10 +62,11 @@ namespace ExpenseTracker.API.Controllers
             Response.Cookies.Append("accountId", account.Id.ToString(),
                 new CookieOptions
                 {
-                    Secure = true,
-                    Path = "/",
                     IsEssential = true,
+                    Path = "/",
+                    Domain = domain,
                     SameSite = SameSiteMode.None,
+                    Secure = true,
                     Expires = DateTime.Now.AddMinutes(720)
                 });
 
