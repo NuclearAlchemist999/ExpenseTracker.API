@@ -52,7 +52,7 @@ namespace ExpenseTracker.API.Controllers
                 {
                     HttpOnly = true,
                     IsEssential = true,
-                    Path = "/",
+                    //Path = "/",
                     Domain = domain,
                     SameSite = SameSiteMode.None,
                     Secure = true,
@@ -63,7 +63,7 @@ namespace ExpenseTracker.API.Controllers
                 new CookieOptions
                 {
                     IsEssential = true,
-                    Path = "/",
+                    //Path = "/",
                     Domain = domain,
                     SameSite = SameSiteMode.None,
                     Secure = true,
