@@ -4,6 +4,7 @@
     {
         protected NotFoundException(string message)
         : base(message)
-        { }
+        { 
+        }
     }
 }

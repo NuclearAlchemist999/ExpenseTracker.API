@@ -5,7 +5,6 @@
         public ExpenseNotFoundException(Guid expenseId)
             : base ($"The expense with id {expenseId} does not exist.")
         {
-
         }
     }
 }

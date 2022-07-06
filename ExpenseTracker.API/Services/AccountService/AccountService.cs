@@ -1,6 +1,7 @@
 ﻿using ExpenseTracker.API.DTO.Converters;
 using ExpenseTracker.API.DTO.DtoModels;
 using ExpenseTracker.API.DTO.Request;
+using ExpenseTracker.API.Exceptions;
 using ExpenseTracker.API.Models;
 using ExpenseTracker.API.Repositories.AccountRepository;
 
@@ -17,6 +18,13 @@ namespace ExpenseTracker.API.Services.AccountService
 
         public async Task<AccountDto> CreateAccount(CreateAccountRequestDto request)
         {
+            var account = await _accountRepo.GetAccountByUsername(request.Username);
+
+            if (account is not null)
+            {
+                throw new UsernameTakenException();
+            }
+
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
             var newAccount = new Account
@@ -33,14 +41,24 @@ namespace ExpenseTracker.API.Services.AccountService
 
         public async Task<Account> GetAccount(string username)
         {
-            return await _accountRepo.GetAccountByUsername(username);
+            var account =  await _accountRepo.GetAccountByUsername(username);
+
+            if (account is null)
+            {
+                throw new InvalidCredentialsException();
+            }
+
+            return account;
         }
 
         public async Task<AccountDto> GetAccountById(string cookie)
         {
-            var accountId = Guid.Parse(cookie);
-
-            var account = await _accountRepo.GetAccountById(accountId);
+            if (string.IsNullOrEmpty(cookie))
+            {
+                throw new AccountNotFoundException();
+            }
+       
+            var account = await _accountRepo.GetAccountById(Guid.Parse(cookie));
             
             return account.ToAccountDto();
         }

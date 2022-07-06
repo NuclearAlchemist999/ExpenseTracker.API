@@ -5,7 +5,6 @@ using ExpenseTracker.API.ParamModels;
 using ExpenseTracker.API.Services.ExpenseService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Web;
 
 namespace ExpenseTracker.API.Controllers
 {
@@ -31,7 +30,9 @@ namespace ExpenseTracker.API.Controllers
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddExpense(CreateExpenseRequestDto request)
-        {
+        {           
+            if (!ModelState.IsValid) return UnprocessableEntity(ModelState);
+
             var cookie = Request.Cookies["accountId"];
 
             var expense = await _expenseService.AddExpense(request, cookie);
@@ -52,6 +53,8 @@ namespace ExpenseTracker.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateExpense(Guid id, UpdateExpenseRequestDto request)
         {
+            if (!ModelState.IsValid) return UnprocessableEntity(ModelState);
+
             var updatedExpense = await _expenseService.UpdateExpense(id, request);
 
             return Ok(updatedExpense);

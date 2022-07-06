@@ -21,11 +21,6 @@ namespace ExpenseTracker.API.Controllers
         {
             var cookie = Request.Cookies["accountId"];
 
-            if (string.IsNullOrEmpty(cookie))
-            {
-                return NotFound();
-            }
-
             var account = await _accountService.GetAccountById(cookie);
             
             return Ok(account);

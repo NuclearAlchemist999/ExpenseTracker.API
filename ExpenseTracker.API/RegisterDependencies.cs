@@ -36,6 +36,11 @@ namespace ExpenseTracker.API
 
         public static void ConfigureCors(this IServiceCollection services)
         {
+#if DEBUG
+            var origin = "http://localhost:3000";
+#else
+            var origin = Environment.GetEnvironmentVariable("CLIENT_URL");
+#endif
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(policy =>
@@ -43,7 +48,7 @@ namespace ExpenseTracker.API
                     policy.AllowAnyHeader()
                           .AllowAnyMethod()
                           .AllowCredentials()
-                          .WithOrigins("http://localhost:3000");
+                          .WithOrigins(origin);
                 });
             });
         }

@@ -1,4 +1,5 @@
 ﻿using ExpenseTracker.API.DTO.Request;
+using ExpenseTracker.API.Exceptions;
 using ExpenseTracker.API.Repositories.AccountRepository;
 
 namespace ExpenseTracker.API.Services.AuthService
@@ -17,6 +18,11 @@ namespace ExpenseTracker.API.Services.AuthService
             var account = await _accountRepo.GetAccountByUsername(request.Username);
 
             bool isCorrectPassword = BCrypt.Net.BCrypt.Verify(request.Password, account.Password);
+
+            if (!isCorrectPassword)
+            {
+                throw new InvalidCredentialsException();
+            }
 
             return isCorrectPassword;
         }

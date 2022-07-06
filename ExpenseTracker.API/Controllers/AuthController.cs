@@ -4,7 +4,6 @@ using ExpenseTracker.API.Services.AccountService;
 using ExpenseTracker.API.Services.AuthService;
 using ExpenseTracker.API.Services.JwtService;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExpenseTracker.API.Controllers
@@ -30,10 +29,6 @@ namespace ExpenseTracker.API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> CreateAccount(CreateAccountRequestDto request)
         {
-            var dbUser = await _accountservice.GetAccount(request.Username);
-
-            if (dbUser != null) return BadRequest("Username already exists.");
-
             var user = await _accountservice.CreateAccount(request);
 
             return Ok(user);
@@ -44,14 +39,7 @@ namespace ExpenseTracker.API.Controllers
         {
             var account = await _accountservice.GetAccount(request.Username);
 
-            if (account == null) return BadRequest();
-
-            bool isValid = await _authService.ValidateLogin(request);
-
-            if (!isValid)
-            {
-                return BadRequest("Kontrollera inloggningsuppgifterna.");
-            }
+            await _authService.ValidateLogin(request);
 
             var token = _jwtService.CreateToken(account.Id);
 
@@ -80,7 +68,7 @@ namespace ExpenseTracker.API.Controllers
         }
 
         [Authorize]
-        [HttpGet("VerifyAuth")]
+        [HttpGet("verifyAuth")]
         public IActionResult VerifyAuth()
         {
             var response = new AuthResponseDto
