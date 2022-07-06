@@ -45,7 +45,7 @@ namespace ExpenseTracker.API.Controllers
 #if DEBUG
             var domain = "http://localhost:3000";
 #else
-            var domain = Environment.GetEnvironmentVariable("CLIENT_URL");
+            var domain = Environment.GetEnvironmentVariable("SERVER_URL");
 #endif
             Response.Cookies.Append("authToken", token, 
                 new CookieOptions
