@@ -52,7 +52,6 @@ namespace ExpenseTracker.API.Controllers
                 {
                     HttpOnly = true,
                     IsEssential = true,
-                    //Path = "/",
                     Domain = domain,
                     SameSite = SameSiteMode.None,
                     Secure = true,
@@ -63,7 +62,6 @@ namespace ExpenseTracker.API.Controllers
                 new CookieOptions
                 {
                     IsEssential = true,
-                    //Path = "/",
                     Domain = domain,
                     SameSite = SameSiteMode.None,
                     Secure = true,
@@ -89,12 +87,17 @@ namespace ExpenseTracker.API.Controllers
         [HttpPost("logout")]
         public IActionResult Logout()
         {
+#if DEBUG
+            var domain = "http://localhost:3000";
+#else
+            var domain = Environment.GetEnvironmentVariable("SERVER_URL");
+#endif
             Response.Cookies.Delete("authToken",
             new CookieOptions
             {
                 HttpOnly = true,
                 IsEssential = true,
-                Path = "/",
+                Domain = domain,
                 SameSite = SameSiteMode.None,
                 Secure = true,
             });
@@ -103,7 +106,7 @@ namespace ExpenseTracker.API.Controllers
             new CookieOptions
             {
                 Secure = true,
-                Path = "/",
+                Domain = domain,
                 IsEssential = true,
                 SameSite = SameSiteMode.None,
             });
