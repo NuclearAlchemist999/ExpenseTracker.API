@@ -67,7 +67,18 @@ namespace ExpenseTracker.API.Services.ExpenseService
                     .Take((int)_params.Limit).ToList();
             }
 
-            if (_params.Month != null && _params.Year != null)
+            if (_params.Month != null && _params.Year != null && _params.Categories != null)
+            {
+                shortMonth = _params.Month.ToShortMonth();
+
+                totalExpenses = basicExp.Where(e => e.CreatedYear == _params.Year && e.ShortMonth == shortMonth &&
+                    GetTitles(e, GetCategories(_params.Categories))).ToList();
+
+                expenses = basicExp.Where(e => e.CreatedYear == _params.Year && e.ShortMonth == shortMonth &&
+                    GetTitles(e, GetCategories(_params.Categories))).Skip(Skip(_params)).Take((int)_params.Limit).ToList();
+            }
+
+            if (_params.Month != null && _params.Year != null && _params.Categories == null)
             {
                 shortMonth = _params.Month.ToShortMonth();
                
@@ -77,7 +88,27 @@ namespace ExpenseTracker.API.Services.ExpenseService
                     .Skip(Skip(_params)).Take((int)_params.Limit).ToList();
             }
 
-            if (_params.Categories != null)
+            if (_params.Month != null && _params.Year == null && _params.Categories != null)
+            {
+                shortMonth = _params.Month.ToShortMonth();
+
+                totalExpenses = basicExp.Where(e => e.CreatedYear == DateTime.Now.Year && e.ShortMonth == shortMonth &&
+                GetTitles(e, GetCategories(_params.Categories))).ToList();
+
+                expenses = basicExp.Where(e => e.CreatedYear == DateTime.Now.Year && e.ShortMonth == shortMonth &&
+                GetTitles(e, GetCategories(_params.Categories))).Skip(Skip(_params)).Take((int)_params.Limit).ToList();
+            }
+
+            if (_params.Month == null && _params.Year != null && _params.Categories != null)
+            {
+                totalExpenses = basicExp.Where(e => e.CreatedYear == _params.Year &&
+                GetTitles(e, GetCategories(_params.Categories))).ToList();
+
+                expenses = basicExp.Where(e => e.CreatedYear == _params.Year && GetTitles(e, GetCategories(_params.Categories)))
+                .Skip(Skip(_params)).Take((int)_params.Limit).ToList();
+            }
+
+            if (_params.Month == null && _params.Year == null && _params.Categories != null)
             {
                 totalExpenses = basicExp.Where(e => GetTitles(e, GetCategories(_params.Categories))).ToList();
                
@@ -85,13 +116,21 @@ namespace ExpenseTracker.API.Services.ExpenseService
                     .Skip(Skip(_params)).Take((int)_params.Limit).ToList();
             }
 
-            if (_params.StartDate != null && _params.EndDate != null)
+            if (_params.Month == null && _params.Year != null && _params.Categories == null)
             {
-                totalExpenses = basicExp.Where(e => GetTimeInterval(DateTime.Parse(_params.StartDate), DateTime.Parse
-                    (_params.EndDate), e)).ToList();
+                totalExpenses = basicExp.Where(e => e.CreatedYear == _params.Year).ToList();
 
-                expenses = basicExp.Where(e => GetTimeInterval(DateTime.Parse(_params.StartDate), DateTime.Parse
-                    (_params.EndDate), e)).Skip(Skip(_params)).Take((int)_params.Limit).ToList();
+                expenses = basicExp.Where(e => e.CreatedYear == _params.Year).Skip(Skip(_params)).Take((int)_params.Limit).ToList();
+            }
+
+            if (_params.Month != null && _params.Year == null && _params.Categories == null)
+            {
+                shortMonth = _params.Month.ToShortMonth();
+
+                totalExpenses = basicExp.Where(e => e.ShortMonth == shortMonth && e.CreatedYear == DateTime.Now.Year).ToList();
+
+                expenses = basicExp.Where(e => e.ShortMonth == shortMonth && e.CreatedYear == DateTime.Now.Year)
+                    .Skip(Skip(_params)).Take((int)_params.Limit).ToList();
             }
 
             if (_params.Categories != null && _params.StartDate != null && _params.EndDate != null)
@@ -103,49 +142,16 @@ namespace ExpenseTracker.API.Services.ExpenseService
                     DateTime.Parse(_params.EndDate), e) && GetTitles(e, GetCategories(_params.Categories)))
                    .Skip(Skip(_params)).Take((int)_params.Limit).ToList();
             }
-            if (_params.Year != null)
-            {
-                totalExpenses = basicExp.Where(e => e.CreatedYear == _params.Year).ToList();
 
-                expenses = basicExp.Where(e => e.CreatedYear == _params.Year).Skip(Skip(_params)).Take((int)_params.Limit).ToList();
-            }
-            if (_params.Month != null)
+            if (_params.Categories == null && _params.StartDate != null && _params.EndDate != null)
             {
-                shortMonth = _params.Month.ToShortMonth();
+                totalExpenses = basicExp.Where(e => GetTimeInterval(DateTime.Parse(_params.StartDate), DateTime.Parse
+                    (_params.EndDate), e)).ToList();
 
-                totalExpenses = basicExp.Where(e => e.ShortMonth == shortMonth && e.CreatedYear == DateTime.Now.Year).ToList();
+                expenses = basicExp.Where(e => GetTimeInterval(DateTime.Parse(_params.StartDate), DateTime.Parse
+                    (_params.EndDate), e)).Skip(Skip(_params)).Take((int)_params.Limit).ToList();
+            }
 
-                expenses = basicExp.Where(e => e.ShortMonth == shortMonth && e.CreatedYear == DateTime.Now.Year)
-                    .Skip(Skip(_params)).Take((int)_params.Limit).ToList();
-            }
-            if (_params.Month != null && _params.Year != null && _params.Categories != null)
-            {
-                shortMonth = _params.Month.ToShortMonth();
-               
-                totalExpenses = basicExp.Where(e => e.CreatedYear == _params.Year && e.ShortMonth == shortMonth &&
-                    GetTitles(e, GetCategories(_params.Categories))).ToList(); 
-                
-                expenses = basicExp.Where(e => e.CreatedYear == _params.Year && e.ShortMonth == shortMonth && 
-                    GetTitles(e, GetCategories(_params.Categories))).Skip(Skip(_params)).Take((int)_params.Limit).ToList();
-            }
-            if (_params.Year != null && _params.Categories != null)
-            {
-                totalExpenses = basicExp.Where(e => e.CreatedYear == _params.Year && 
-                GetTitles(e, GetCategories(_params.Categories))).ToList();
-
-                expenses = basicExp.Where(e => e.CreatedYear == _params.Year && GetTitles(e, GetCategories(_params.Categories)))
-                .Skip(Skip(_params)).Take((int)_params.Limit).ToList();
-            }
-            if (_params.Month != null && _params.Categories != null)
-            {
-                shortMonth = _params.Month.ToShortMonth();
-               
-                totalExpenses = basicExp.Where(e => e.CreatedYear == DateTime.Now.Year && e.ShortMonth == shortMonth &&
-                GetTitles(e, GetCategories(_params.Categories))).ToList();
-
-                expenses = basicExp.Where(e => e.CreatedYear == DateTime.Now.Year && e.ShortMonth == shortMonth &&
-                GetTitles(e, GetCategories(_params.Categories))).Skip(Skip(_params)).Take((int)_params.Limit).ToList();
-            }
             if (_params.SearchQuery != null)
             {
                 totalExpenses = basicExp.Where(e => e.Category.Title.ToLower().Contains(_params.SearchQuery.ToLower()) ||
