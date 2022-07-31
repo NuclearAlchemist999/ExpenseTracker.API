@@ -19,7 +19,7 @@ namespace ExpenseTracker.API
         public static void ConfigureDatabase(this IServiceCollection services, IConfiguration configuration)
         {
 #if DEBUG
-            var connectionString = configuration["ConnectionStrings:Elephant"];
+            var connectionString = configuration["ConnectionStrings:ExpenseTracker"];
 #else
             var dbHost = Environment.GetEnvironmentVariable("POSTGRES_HOST");
             var dbUser = Environment.GetEnvironmentVariable("POSTGRES_USER");
@@ -30,7 +30,7 @@ namespace ExpenseTracker.API
 #endif
             services.AddDbContext<ExTrackerDbContext>(options =>
             {
-                options.UseNpgsql(connectionString);
+                options.UseSqlServer(connectionString);
             });
         }
 

@@ -52,7 +52,7 @@ namespace ExpenseTracker.API.Controllers
                 {
                     HttpOnly = true,
                     IsEssential = true,
-                   Domain = domain,
+                    Domain = domain,
                     SameSite = SameSiteMode.None,
                     Secure = true,
                     Expires = DateTime.Now.AddMinutes(720)
