@@ -21,12 +21,7 @@ namespace ExpenseTracker.API
 #if DEBUG
             var connectionString = configuration["ConnectionStrings:ExpenseTracker"];
 #else
-            var dbHost = Environment.GetEnvironmentVariable("POSTGRES_HOST");
-            var dbUser = Environment.GetEnvironmentVariable("POSTGRES_USER");
-            var dbPort = Environment.GetEnvironmentVariable("POSTGRES_PORT");
-            var dbPassword = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD");
-            var database = Environment.GetEnvironmentVariable("POSTGRES_DATABASE");
-            var connectionString = $"Server={dbHost};Port={dbPort};User Id={dbUser};Password={dbPassword};Database={database}";
+            var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION");
 #endif
             services.AddDbContext<ExTrackerDbContext>(options =>
             {
