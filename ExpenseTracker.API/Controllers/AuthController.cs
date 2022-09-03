@@ -15,15 +15,18 @@ namespace ExpenseTracker.API.Controllers
         private readonly IAccountService _accountservice;
         private readonly IAuthService _authService;
         private readonly IJwtService _jwtService;
+        private readonly IHostEnvironment _environment;
 
         public AuthController(
             IAccountService accountservice, 
             IAuthService authService, 
-            IJwtService jwtService)
+            IJwtService jwtService,
+            IHostEnvironment environment)
         {
             _accountservice = accountservice;
             _authService = authService;
             _jwtService = jwtService;
+            _environment = environment;
         }
 
         [HttpPost("register")]
@@ -41,12 +44,11 @@ namespace ExpenseTracker.API.Controllers
 
             await _authService.ValidateLogin(request);
 
+            var domain = _environment.IsDevelopment()
+                ? null : Environment.GetEnvironmentVariable("SERVER_URL");
+
             var token = _jwtService.CreateToken(account.Id);
-#if DEBUG
-            var domain = "http://localhost:3000";
-#else
-            var domain = Environment.GetEnvironmentVariable("SERVER_URL");
-#endif
+
             Response.Cookies.Append("authToken", token, 
                 new CookieOptions
                 {
@@ -87,11 +89,9 @@ namespace ExpenseTracker.API.Controllers
         [HttpPost("logout")]
         public IActionResult Logout()
         {
-#if DEBUG
-            var domain = "http://localhost:3000";
-#else
-            var domain = Environment.GetEnvironmentVariable("SERVER_URL");
-#endif
+            var domain = _environment.IsDevelopment()
+                ? null : Environment.GetEnvironmentVariable("SERVER_URL");
+
             Response.Cookies.Delete("authToken",
             new CookieOptions
             {

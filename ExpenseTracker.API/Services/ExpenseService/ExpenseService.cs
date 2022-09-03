@@ -34,9 +34,9 @@ namespace ExpenseTracker.API.Services.ExpenseService
                 Title = request.Title,
                 CategoryId = Guid.Parse(request.CategoryId),
                 Price = request.Price,
-                CreatedAt = request.CreatedAt,
+                CreatedAt = DateTime.Parse(request.CreatedAt).ToString("yyyy-MM-dd"),
                 CreatedYear = DateTime.Parse(request.CreatedAt).Year,
-                ShortMonth = request.CreatedAt.ToShortMonth()
+                ShortMonth = DateTime.Parse(request.CreatedAt).ToString("yyyy-MM-dd").ToShortMonth()
             };
 
             var expense = await _expenseRepo.AddExpense(newExpense);
@@ -215,9 +215,9 @@ namespace ExpenseTracker.API.Services.ExpenseService
             expense.Title = request.Title;
             expense.CategoryId = Guid.Parse(request.CategoryId);
             expense.Price = request.Price;
-            expense.CreatedAt = request.CreatedAt;
+            expense.CreatedAt = DateTime.Parse(request.CreatedAt).ToString("yyyy-MM-dd");
             expense.CreatedYear = DateTime.Parse(request.CreatedAt).Year;
-            expense.ShortMonth = request.CreatedAt.ToShortMonth();
+            expense.ShortMonth = DateTime.Parse(request.CreatedAt).ToString("yyyy-MM-dd").ToShortMonth();
             expense.UpdatedAt = DateTime.UtcNow;
 
             await _expenseRepo.UpdateExpense(expense);
