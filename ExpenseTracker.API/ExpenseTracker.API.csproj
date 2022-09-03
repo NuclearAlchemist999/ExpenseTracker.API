@@ -4,6 +4,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <!--<Nullable>enable</Nullable>-->
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>95d71a7b-dba2-4beb-a7f7-def897cbf6cd</UserSecretsId>
+    <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,6 +18,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.22.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.4" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.19.0" />
   </ItemGroup>
