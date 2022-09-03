@@ -59,7 +59,7 @@ namespace ExpenseTracker.API.Services.ExpenseService
             if (_params.Month == null && _params.Year == null && _params.Categories == null &&
                 _params.StartDate == null && _params.EndDate == null && _params.SearchQuery == null)
             {
-                shortMonth = DateTime.Now.ToString().ToShortMonth();
+                shortMonth = DateTime.Now.ToString("yyyy-MM-dd").ToShortMonth();
                
                 totalExpenses = basicExp.Where(e => e.CreatedYear == DateTime.Now.Year && e.ShortMonth == shortMonth).ToList();
                
