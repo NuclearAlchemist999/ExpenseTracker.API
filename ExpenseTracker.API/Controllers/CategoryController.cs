@@ -1,11 +1,10 @@
 ﻿using ExpenseTracker.API.Services.CategoryService;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExpenseTracker.API.Controllers
 {
-    [Route("api/categories")]
+    [Route("categories")]
     [ApiController]
     public class CategoryController : ControllerBase
     {

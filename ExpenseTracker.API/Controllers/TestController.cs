@@ -3,7 +3,7 @@
 namespace ExpenseTracker.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("test")]
     public class TestController : ControllerBase
     {
         [HttpGet]

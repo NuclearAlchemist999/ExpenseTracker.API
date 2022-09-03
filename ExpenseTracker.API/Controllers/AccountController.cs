@@ -1,11 +1,10 @@
 ﻿using ExpenseTracker.API.Services.AccountService;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExpenseTracker.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("account")]
     [ApiController]
     public class AccountController : ControllerBase
     {

@@ -1,5 +1,4 @@
-﻿using ExpenseTracker.API.DTO.Converters;
-using ExpenseTracker.API.DTO.Request;
+﻿using ExpenseTracker.API.DTO.Request;
 using ExpenseTracker.API.DTO.Response;
 using ExpenseTracker.API.ParamModels;
 using ExpenseTracker.API.Services.ExpenseService;
@@ -8,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ExpenseTracker.API.Controllers
 {
-    [Route("api/expenses")]
+    [Route("expenses")]
     [ApiController]
     public class ExpenseController : ControllerBase
     {
