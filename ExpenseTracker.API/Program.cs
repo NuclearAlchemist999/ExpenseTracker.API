@@ -13,6 +13,8 @@ builder.Services.ConfigureServices();
 
 builder.Services.ConfigureAuthentication(builder.Configuration);
 
+builder.Services.ConfigureInfrastructure(builder.Configuration, builder.Environment);
+
 var app = builder.Build();
 
 app.ConfigureExceptionHandler();

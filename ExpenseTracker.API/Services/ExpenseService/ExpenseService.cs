@@ -13,9 +13,11 @@ namespace ExpenseTracker.API.Services.ExpenseService
     public class ExpenseService : IExpenseService
     {
         private readonly IExpenseRepository _expenseRepo;
-        public ExpenseService(IExpenseRepository expenseRepo)
+        private readonly HttpClient _httpClient;
+        public ExpenseService(IExpenseRepository expenseRepo, HttpClient httpClient)
         {
             _expenseRepo = expenseRepo;
+            _httpClient = httpClient;
         }
 
         public async Task<ExpenseDto> GetExpense(Guid expenseId)
@@ -47,6 +49,8 @@ namespace ExpenseTracker.API.Services.ExpenseService
         public async Task<AllExpensesResponseDto> FilterExpenses(ExpenseParams _params,
             string cookie)
         {
+            var response = await _httpClient.GetAsync("/api/startup");
+
             var accountId = Guid.Parse(cookie);
 
             string shortMonth = "";

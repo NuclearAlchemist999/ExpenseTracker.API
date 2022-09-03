@@ -95,5 +95,23 @@ namespace ExpenseTracker.API
                     };
                 });
         }
+
+        public static void ConfigureInfrastructure(this IServiceCollection services, IConfiguration
+            configuration, IHostEnvironment environment)
+        {
+            var iasApiKey = environment.IsDevelopment()
+                ? configuration["IASApiKey"]
+                : Environment.GetEnvironmentVariable("IAS_API_KEY");
+
+            var iasBaseUri = environment.IsDevelopment()
+                ? configuration["IASBaseUri"]
+                : Environment.GetEnvironmentVariable("IAS_BASE_URI");
+
+            services.AddHttpClient<IExpenseService, ExpenseService>(configuration =>
+            {
+                configuration.BaseAddress = new Uri(iasBaseUri);
+                configuration.DefaultRequestHeaders.Add("api-key", iasApiKey);
+            });
+        }
     }
 }
