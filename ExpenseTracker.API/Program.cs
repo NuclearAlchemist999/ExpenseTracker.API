@@ -15,7 +15,7 @@ builder.Services.ConfigureAuthentication(builder.Configuration);
 
 var app = builder.Build();
 
-app.ConfigureExceptionHandler();
+//app.ConfigureExceptionHandler();
 
 app.UseCors();
 
